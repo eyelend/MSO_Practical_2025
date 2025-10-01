@@ -1,0 +1,14 @@
+C:\Users\gvdkk\Documents\UU\INCA p1\MSO\Practica\MSO_P2_Code\bin\Debug\net7.0\MSO_P2_Code.exe
+C:\Users\gvdkk\Documents\UU\INCA p1\MSO\Practica\MSO_P2_Code\bin\Debug\net7.0\MSO_P2_Code.deps.json
+C:\Users\gvdkk\Documents\UU\INCA p1\MSO\Practica\MSO_P2_Code\bin\Debug\net7.0\MSO_P2_Code.runtimeconfig.json
+C:\Users\gvdkk\Documents\UU\INCA p1\MSO\Practica\MSO_P2_Code\bin\Debug\net7.0\MSO_P2_Code.dll
+C:\Users\gvdkk\Documents\UU\INCA p1\MSO\Practica\MSO_P2_Code\bin\Debug\net7.0\MSO_P2_Code.pdb
+C:\Users\gvdkk\Documents\UU\INCA p1\MSO\Practica\MSO_P2_Code\obj\Debug\net7.0\MSO_P2_Code.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\gvdkk\Documents\UU\INCA p1\MSO\Practica\MSO_P2_Code\obj\Debug\net7.0\MSO_P2_Code.AssemblyInfoInputs.cache
+C:\Users\gvdkk\Documents\UU\INCA p1\MSO\Practica\MSO_P2_Code\obj\Debug\net7.0\MSO_P2_Code.AssemblyInfo.cs
+C:\Users\gvdkk\Documents\UU\INCA p1\MSO\Practica\MSO_P2_Code\obj\Debug\net7.0\MSO_P2_Code.csproj.CoreCompileInputs.cache
+C:\Users\gvdkk\Documents\UU\INCA p1\MSO\Practica\MSO_P2_Code\obj\Debug\net7.0\MSO_P2_Code.dll
+C:\Users\gvdkk\Documents\UU\INCA p1\MSO\Practica\MSO_P2_Code\obj\Debug\net7.0\refint\MSO_P2_Code.dll
+C:\Users\gvdkk\Documents\UU\INCA p1\MSO\Practica\MSO_P2_Code\obj\Debug\net7.0\MSO_P2_Code.pdb
+C:\Users\gvdkk\Documents\UU\INCA p1\MSO\Practica\MSO_P2_Code\obj\Debug\net7.0\MSO_P2_Code.genruntimeconfig.cache
+C:\Users\gvdkk\Documents\UU\INCA p1\MSO\Practica\MSO_P2_Code\obj\Debug\net7.0\ref\MSO_P2_Code.dll
