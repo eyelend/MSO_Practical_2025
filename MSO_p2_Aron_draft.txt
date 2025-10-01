@@ -1,0 +1,128 @@
+1.
+
+  classDiagram
+    %%region Application
+        namespace namespace_Application{
+            class Application{
+                +void Run()
+                #Program AskForProgram()
+                #void UseProgram()
+            }
+            class ProgramFormat
+            class ProgramImporter{
+                +string path 
+                +Program importFromtxt(string relativePath)
+            }
+            class ExamplePrograms{
+                +Program basic1
+                +Program basic2
+                +Program advanced1
+                +Program expert1
+            }
+        }
+        <<enumeration>> ProgramFormat
+        ProgramFormat <.. ProgramImporter
+        Application *-- ProgramImporter
+        ProgramImporter ..> Program : creates
+        Application *-- ExamplePrograms
+        ExamplePrograms --> Program
+    %%
+
+    %%region Commands
+        namespace namesapce_Commands{
+            class ICommand{
+                void ApplyOnWorld(ref World world)
+                %% ITraceableCommand[] expandFully()
+            }
+            class Repeat{
+                +int count
+            }
+            class ITraceableCommand{
+                +string TextualTrace()
+            }
+
+            class Turn{
+                +dir
+            }
+            class Move{
+                +int stepCount
+            }
+
+        }
+        <<interface>> ICommand
+        <<interface>> ITraceableCommand
+        
+        ICommand <|.. ITraceableCommand
+        ITraceableCommand <|.. Turn
+        ITraceableCommand <|.. Move
+        ICommand <|.. Repeat
+        ICommand <-- Repeat : * body
+    %%
+
+    class Program{
+        +ProgramResult execute()
+        -Program parse(String code) $
+        +Program import(String path) $
+    }
+    Program --> ICommand : * commands
+    Program --> World : 1 startWorld
+    Program ..> ProgramResult
+    Program --> ProgramMetrics : 1 metrics
+    class ProgramResult{
+        +string TextualTrace()
+    }
+    ProgramResult --> WorldState : 1 endState
+    ProgramResult --> ITraceableCommand : * trace
+    class ProgramMetrics{
+        +int commandCount
+        +int maxNestingLevel
+        +int repeatCommandCount
+    }
+
+    %%region World
+        namespace namespace_World{
+            class WorldState{
+                %% Data that can be changed by the program
+            }
+            class PlayerState{
+                int2 pos
+                dir
+            }
+            class World{
+                +World Copy()
+                +void TurnLeft()
+                +void TurnRight()
+                +void MoveForward(int dist)
+            }
+            class WorldSettings
+        }
+        WorldState *-- PlayerState : 1 player
+        World --> WorldState : 1 startState
+        World *-- WorldSettings
+    %%
+
+    ITraceableCommand <-- WorldState : * history
+    ICommand ..> World : affects
+
+
+
+
+
+2.
+  Likely future changes:
+    - A new type of command gets added, for example ...
+    - 
+    - 
+
+  High cohesion:
+    
+
+  Low coupling:
+    Improvable.
+
+
+4.
+  
+
+
+
