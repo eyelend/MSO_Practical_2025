@@ -115,14 +115,15 @@
     - 
 
   High cohesion:
-    
+    ...
 
   Low coupling:
     Improvable.
 
 
 4.
-  
+  ...
+
 
 
 
