@@ -15,11 +15,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\gvdkk\\Documents\\UU\\INCA p1\\MSO\\Practica\\MSO_P2_Code\\MSO_P2_Code.csproj",
+      "projectUniqueName": "C:\\Users\\gvdkk\\Documents\\UU\\INCA p1\\MSO\\Practica\\MSO_p2_Git\\MSO_P2_Code\\MSO_P2_Code.csproj",
       "projectName": "MSO_P2_Code",
-      "projectPath": "C:\\Users\\gvdkk\\Documents\\UU\\INCA p1\\MSO\\Practica\\MSO_P2_Code\\MSO_P2_Code.csproj",
+      "projectPath": "C:\\Users\\gvdkk\\Documents\\UU\\INCA p1\\MSO\\Practica\\MSO_p2_Git\\MSO_P2_Code\\MSO_P2_Code.csproj",
       "packagesPath": "C:\\Users\\gvdkk\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\gvdkk\\Documents\\UU\\INCA p1\\MSO\\Practica\\MSO_P2_Code\\obj\\",
+      "outputPath": "C:\\Users\\gvdkk\\Documents\\UU\\INCA p1\\MSO\\Practica\\MSO_p2_Git\\MSO_P2_Code\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

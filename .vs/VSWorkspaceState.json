@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\MSO_P2_Code",
+    "\\MSO_P2_Code\\Applic"
   ],
-  "SelectedNode": "\\C:\\Users\\gvdkk\\Documents\\UU\\INCA p1\\MSO\\Practica\\MSO_p2_Git",
+  "SelectedNode": "\\MSO_P2_Code\\Applic\\Application.cs",
   "PreviewInSolutionExplorer": false
 }
