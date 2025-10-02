@@ -11,6 +11,7 @@
             class ProgramFormat
             class ProgramImporter{
                 +string path 
+                -Program parse(String code)
                 +Program importFromtxt(string relativePath)
             }
             class ExamplePrograms{
@@ -31,48 +32,32 @@
     %%region Commands
         namespace namesapce_Commands{
             class ICommand{
-                void ApplyOnWorld(ref World world)
-                %% ITraceableCommand[] expandFully()
+                +void ApplyOnWorld(ref World world)
             }
             class Repeat{
                 +int count
             }
-            class ITraceableCommand{
-                +string TextualTrace()
-            }
-
             class Turn{
                 +dir
             }
             class Move{
                 +int stepCount
             }
-
         }
         <<interface>> ICommand
-        <<interface>> ITraceableCommand
-        
-        ICommand <|.. ITraceableCommand
-        ITraceableCommand <|.. Turn
-        ITraceableCommand <|.. Move
+        ICommand <|.. Turn
+        ICommand <|.. Move
         ICommand <|.. Repeat
         ICommand <-- Repeat : * body
     %%
 
     class Program{
-        +ProgramResult execute()
-        -Program parse(String code) $
-        +Program import(String path) $
+        +WorldState execute()
     }
     Program --> ICommand : * commands
     Program --> World : 1 startWorld
-    Program ..> ProgramResult
+    Program ..> WorldState
     Program --> ProgramMetrics : 1 metrics
-    class ProgramResult{
-        +string TextualTrace()
-    }
-    ProgramResult --> WorldState : 1 endState
-    ProgramResult --> ITraceableCommand : * trace
     class ProgramMetrics{
         +int commandCount
         +int maxNestingLevel
@@ -83,6 +68,7 @@
         namespace namespace_World{
             class WorldState{
                 %% Data that can be changed by the program
+                +void AddToTrace(IEventTrace event)
             }
             class PlayerState{
                 int2 pos
@@ -95,14 +81,28 @@
                 +void MoveForward(int dist)
             }
             class WorldSettings
+            class IEventTrace{
+                +string TextualTrace()
+            }
+            class TurnTrace{
+                +dir
+            }
+            class MoveTrace{
+                +int stepCount
+            }
         }
+        <<interface>> IEventTrace
         WorldState *-- PlayerState : 1 player
+        WorldState --* IEventTrace : * trace
         World --> WorldState : 1 startState
+        World ..> IEventTrace : creates
         World *-- WorldSettings
+        IEventTrace <|.. TurnTrace
+        IEventTrace <|.. MoveTrace
     %%
 
-    ITraceableCommand <-- WorldState : * history
     ICommand ..> World : affects
+
 
 
 
@@ -118,11 +118,12 @@
     ...
 
   Low coupling:
-    Improvable.
+    ...
 
 
 4.
   ...
+
 
 
 
