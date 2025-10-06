@@ -8,13 +8,17 @@ namespace MSO_P2_Code.Applic
 {
     internal class Application
     {
+        protected readonly ProgramImporter programImporter = new();
+        protected readonly ExamplePrograms examplePrograms = ExamplePrograms.Instance;
+
         public void Run()
         {
-            Program program = new Program();
-
+            InnerProgram program = AskForProgram();
+            UseProgram(program);
+            Console.WriteLine("End of application.");
         }
 
-        protected Program AskForProgram()
+        protected InnerProgram AskForProgram()
         {
             Console.WriteLine("Enter the file you want to use:");
             string userInput = Console.ReadLine();
@@ -22,14 +26,16 @@ namespace MSO_P2_Code.Applic
             return null;
         }
 
-        protected void UseProgram(Program program)
+        protected void UseProgram(InnerProgram program)
         {
             Console.WriteLine("Wanna execute (E) or calculate metrics (C)?");
             bool stayInLoop;
             do
             {
                 stayInLoop = false;
-                switch (Console.ReadKey().Key)
+                ConsoleKey userInput = Console.ReadKey().Key;
+                Console.WriteLine();
+                switch (userInput)
                 {
                     case ConsoleKey.E:
                         //todo

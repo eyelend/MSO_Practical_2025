@@ -1,3 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
-Console.ReadLine();
+using MSO_P2_Code.Applic;
+
+new Application().Run();
+
+Console.WriteLine("Press any key to close.");
+Console.ReadKey();
