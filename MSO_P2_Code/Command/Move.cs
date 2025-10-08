@@ -13,7 +13,7 @@ namespace MSO_P2_Code.Command
 
         public void ApplyOnWorld(ref ActualWorld world)
         {
-            throw new NotImplementedException();
+            world.MoveForward(stepCount);
         }
     }
 }

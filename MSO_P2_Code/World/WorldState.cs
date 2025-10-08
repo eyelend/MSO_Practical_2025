@@ -9,7 +9,39 @@ namespace MSO_P2_Code.World
 {
     internal class WorldState
     {
-        public void AddToTrace(IEventTrace trace)
+        public readonly PlayerState playerState;
+        Queue<IEventTrace> trace;
+        public IEventTrace[] Trace => trace.ToArray();
+        public void AddToTrace(IEventTrace eventTrace)
+        {
+            trace.Enqueue(eventTrace);
+        }
+
+        public WorldState(PlayerState playerState)
+        {
+            this.playerState = playerState;
+            trace = new();
+        }
+
+        #region commands
+        public void TurnLeft()
+        {
+            AddToTrace(new TurnTrace(Dir2.Left));
+            playerState.TurnLeft();
+        }
+        public void TurnRight()
+        {
+            AddToTrace(new TurnTrace(Dir2.Right));
+            playerState.TurnRight();
+        }
+        public void MoveForward(int dist)
+        {
+            AddToTrace(new MoveTrace(dist));
+            playerState.MoveForward(dist);
+        }
+        #endregion commands
+
+        public WorldState Copy()
         {
             throw new NotImplementedException();
         }

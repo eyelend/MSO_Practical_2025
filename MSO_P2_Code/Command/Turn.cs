@@ -12,7 +12,11 @@ namespace MSO_P2_Code.Command
         Dir2 dir;
         public void ApplyOnWorld(ref ActualWorld world)
         {
-            throw new NotImplementedException();
+            switch (dir)
+            {
+                case Dir2.Left: world.TurnLeft(); break;
+                case Dir2.Right: world.TurnRight(); break;
+            }
         }
     }
 }

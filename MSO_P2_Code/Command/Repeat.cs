@@ -14,7 +14,9 @@ namespace MSO_P2_Code.Command
 
         public void ApplyOnWorld(ref ActualWorld world)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < count; i++)
+                foreach (ICommand command in body)
+                    command.ApplyOnWorld(ref world);
         }
     }
 }

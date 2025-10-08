@@ -9,6 +9,12 @@ namespace MSO_P2_Code.World.EventTrace
     internal class MoveTrace : IEventTrace
     {
         int stepCount;
+
+        public MoveTrace(int stepCount)
+        {
+            this.stepCount = stepCount;
+        }
+
         public string TextualTrace()
         {
             throw new NotImplementedException();

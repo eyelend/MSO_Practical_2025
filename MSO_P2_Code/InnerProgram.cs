@@ -5,12 +5,15 @@ namespace MSO_P2_Code
 {
     internal class InnerProgram
     {
-        ICommand commands;
+        ICommand[] commands;
         ActualWorld startWorld;
 
         public WorldState Execute()
         {
-            throw new NotImplementedException();
+            ActualWorld world = startWorld.CopyState();
+            foreach (ICommand c in commands)
+                c.ApplyOnWorld(ref world);
+            return world.state;
         }
         public ProgramMetrics GetMetrics()
         {

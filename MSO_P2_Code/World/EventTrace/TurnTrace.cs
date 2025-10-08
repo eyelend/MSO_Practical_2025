@@ -9,6 +9,12 @@ namespace MSO_P2_Code.World.EventTrace
     internal class TurnTrace : IEventTrace
     {
         Dir2 dir;
+
+        public TurnTrace(Dir2 dir)
+        {
+            this.dir = dir;
+        }
+
         public string TextualTrace()
         {
             throw new NotImplementedException();
