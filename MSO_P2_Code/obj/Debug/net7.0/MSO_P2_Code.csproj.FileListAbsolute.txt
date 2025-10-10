@@ -26,3 +26,18 @@ C:\Users\gvdkk\Documents\UU\INCA p1\MSO\Practica\MSO_p2_Git\MSO_P2_Code\obj\Debu
 C:\Users\gvdkk\Documents\UU\INCA p1\MSO\Practica\MSO_p2_Git\MSO_P2_Code\obj\Debug\net7.0\MSO_P2_Code.pdb
 C:\Users\gvdkk\Documents\UU\INCA p1\MSO\Practica\MSO_p2_Git\MSO_P2_Code\obj\Debug\net7.0\MSO_P2_Code.genruntimeconfig.cache
 C:\Users\gvdkk\Documents\UU\INCA p1\MSO\Practica\MSO_p2_Git\MSO_P2_Code\obj\Debug\net7.0\ref\MSO_P2_Code.dll
+Y:\MSO_Practical_2025\MSO_P2_Code\bin\Debug\net7.0\MSO_P2_Code.exe
+Y:\MSO_Practical_2025\MSO_P2_Code\bin\Debug\net7.0\MSO_P2_Code.deps.json
+Y:\MSO_Practical_2025\MSO_P2_Code\bin\Debug\net7.0\MSO_P2_Code.runtimeconfig.json
+Y:\MSO_Practical_2025\MSO_P2_Code\bin\Debug\net7.0\MSO_P2_Code.dll
+Y:\MSO_Practical_2025\MSO_P2_Code\bin\Debug\net7.0\MSO_P2_Code.pdb
+Y:\MSO_Practical_2025\MSO_P2_Code\obj\Debug\net7.0\MSO_P2_Code.GeneratedMSBuildEditorConfig.editorconfig
+Y:\MSO_Practical_2025\MSO_P2_Code\obj\Debug\net7.0\MSO_P2_Code.AssemblyInfoInputs.cache
+Y:\MSO_Practical_2025\MSO_P2_Code\obj\Debug\net7.0\MSO_P2_Code.AssemblyInfo.cs
+Y:\MSO_Practical_2025\MSO_P2_Code\obj\Debug\net7.0\MSO_P2_Code.csproj.CoreCompileInputs.cache
+Y:\MSO_Practical_2025\MSO_P2_Code\obj\Debug\net7.0\MSO_P2_Code.sourcelink.json
+Y:\MSO_Practical_2025\MSO_P2_Code\obj\Debug\net7.0\MSO_P2_Code.dll
+Y:\MSO_Practical_2025\MSO_P2_Code\obj\Debug\net7.0\refint\MSO_P2_Code.dll
+Y:\MSO_Practical_2025\MSO_P2_Code\obj\Debug\net7.0\MSO_P2_Code.pdb
+Y:\MSO_Practical_2025\MSO_P2_Code\obj\Debug\net7.0\MSO_P2_Code.genruntimeconfig.cache
+Y:\MSO_Practical_2025\MSO_P2_Code\obj\Debug\net7.0\ref\MSO_P2_Code.dll

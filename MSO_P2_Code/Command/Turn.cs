@@ -10,6 +10,10 @@ namespace MSO_P2_Code.Command
     internal class Turn : ICommand
     {
         Dir2 dir;
+        public Turn(Dir2 dir)
+        {
+            this.dir = dir;
+        }
         public void ApplyOnWorld(ref ActualWorld world)
         {
             switch (dir)

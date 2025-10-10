@@ -22,8 +22,8 @@ namespace MSO_P2_Code.Applic
         {
             Console.WriteLine("Enter the file you want to use:");
             string userInput = Console.ReadLine();
-            // todo
-            return null;
+            InnerProgram ip = programImporter.Parse(userInput);
+            return ip;
         }
 
         protected void UseProgram(InnerProgram program)

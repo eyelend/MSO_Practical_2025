@@ -8,6 +8,11 @@ namespace MSO_P2_Code
         ICommand[] commands;
         ActualWorld startWorld;
 
+        public InnerProgram(ICommand[] commands, ActualWorld startWorld)
+        {
+            this.commands = commands;
+            this.startWorld = startWorld;
+        }
         public WorldState Execute()
         {
             ActualWorld world = startWorld.CopyState();

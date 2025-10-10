@@ -10,7 +10,10 @@ namespace MSO_P2_Code.Command
     internal class Move : ICommand
     {
         int stepCount;
-
+        public Move(int stepcount)
+        {
+            this.stepCount = stepcount;
+        }
         public void ApplyOnWorld(ref ActualWorld world)
         {
             world.MoveForward(stepCount);
