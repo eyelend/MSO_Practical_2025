@@ -22,5 +22,9 @@ namespace MSO_P2_Code.Command
                 case Dir2.Right: world.TurnRight(); break;
             }
         }
+        public ProgramMetrics GetMetrics()
+        {
+            return new ProgramMetrics(1, 0, 0);
+        }
     }
 }

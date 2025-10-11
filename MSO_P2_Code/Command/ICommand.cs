@@ -10,5 +10,6 @@ namespace MSO_P2_Code.Command
     internal interface ICommand
     {
         void ApplyOnWorld(ref ActualWorld world);
+        ProgramMetrics GetMetrics();
     }
 }

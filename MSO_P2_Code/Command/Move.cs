@@ -18,5 +18,10 @@ namespace MSO_P2_Code.Command
         {
             world.MoveForward(stepCount);
         }
+
+        public ProgramMetrics GetMetrics()
+        {
+            return new ProgramMetrics(1, 0, 0);
+        }
     }
 }

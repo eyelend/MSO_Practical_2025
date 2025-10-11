@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MSO_P2_Code
+namespace MSO_P2_Code.Command
 {
     internal readonly struct ProgramMetrics
     {

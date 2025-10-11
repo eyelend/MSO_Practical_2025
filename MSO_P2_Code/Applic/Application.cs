@@ -28,7 +28,7 @@ namespace MSO_P2_Code.Applic
 
         protected void UseProgram(InnerProgram program)
         {
-            Console.WriteLine("Wanna execute (E) or calculate metrics (C)?");
+            Console.WriteLine("Wanna execute (E) or calculate metrics (M)?");
             bool stayInLoop;
             do
             {
@@ -41,9 +41,12 @@ namespace MSO_P2_Code.Applic
                         //todo
                         Console.WriteLine("Not implemented yet");
                         break;
-                    case ConsoleKey.C:
-                        //todo
-                        Console.WriteLine("Not implemented yet");
+                    case ConsoleKey.M:
+                        Command.ProgramMetrics metrics = program.GetMetrics();
+                        Console.WriteLine(
+                            $"\nnumber of commands = {metrics.commandCount}.\n" +
+                            $"maximum nesting level = {metrics.maxNestingLevel}.\n" +
+                            $"number of repeat-commands = {metrics.repeatCommandCount}.\n");
                         break;
                     default:
                         Console.WriteLine("Invalid answer. Try again.");

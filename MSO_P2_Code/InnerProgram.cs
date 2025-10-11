@@ -23,8 +23,6 @@ namespace MSO_P2_Code
             return world.state;
         }
         public ProgramMetrics GetMetrics()
-        {
-            throw new NotImplementedException();
-        }
+            => commands.GetMetrics();
     }
 }

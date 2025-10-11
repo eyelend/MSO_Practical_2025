@@ -46,7 +46,7 @@
             }
             class ICommand{
                 +void ApplyOnWorld(ref World world)
-                +ProgramMetrics getMetrics()
+                +ProgramMetrics GetMetrics()
             }
             class Body
             class Repeat{
