@@ -11,7 +11,11 @@ namespace MSO_P2_Code.Command
     {
         int count;
         ICommand[] body;
-
+        public Repeat(int count, ICommand[] body)
+        {
+            this.count = count;
+            this.body = body;
+        }
         public void ApplyOnWorld(ref ActualWorld world)
         {
             for (int i = 0; i < count; i++)
