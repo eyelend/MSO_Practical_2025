@@ -22,7 +22,7 @@ namespace MSO_P2_Code.Applic
             {
                 Console.WriteLine(e.Message);
                 Console.WriteLine("Continuing with another program.");
-                stream = new StreamReader("C:\\Users\\gvdkk\\Documents\\UU\\INCA p1\\MSO\\Practica\\MSO_p2_Git\\MSO_P2_Code\\ExampleFiles\\Code.txt");
+                stream = new StreamReader("..\\..\\..\\ExampleFiles\\Code.txt");
             }
             code = stream.ReadToEnd();
             stream.Close();
