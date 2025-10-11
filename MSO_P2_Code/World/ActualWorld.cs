@@ -16,6 +16,7 @@ namespace MSO_P2_Code.World
             this.settings = settings;
             this.state = state;
         }
+        public ActualWorld() : this(new WorldSettings(), new WorldState()) { }
 
         public ActualWorld CopyState()
         {

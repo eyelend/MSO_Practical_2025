@@ -13,7 +13,17 @@ namespace MSO_P2_Code.Applic
         public string importFromtxt(string fileName)
         {
             string code;
-            StreamReader stream = new StreamReader(fileName);
+            StreamReader stream;
+            try
+            {
+                stream = new StreamReader(fileName);
+            }
+            catch (FileNotFoundException e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine("Continuing with another program.");
+                stream = new StreamReader("C:\\Users\\gvdkk\\Documents\\UU\\INCA p1\\MSO\\Practica\\MSO_p2_Git\\MSO_P2_Code\\ExampleFiles\\Code.txt");
+            }
             code = stream.ReadToEnd();
             stream.Close();
             return code;
@@ -28,7 +38,7 @@ namespace MSO_P2_Code.Applic
 
             commands = ParseCommands(strings); //converts string[] to ICommand[], deals with nested loops
 
-            innerProgram = new InnerProgram(commands, new World.ActualWorld(null, new WorldState(new PlayerState())));
+            innerProgram = new InnerProgram(new Body.Builder().FromCommands(commands).Build());
             return innerProgram;
         }
 

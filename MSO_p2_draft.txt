@@ -5,26 +5,26 @@
         namespace namespace_Applic{
             class Application{
                 +void Run()
-                #Program AskForProgram()
+                #InnerProgram AskForProgram()
                 #void UseProgram()
             }
             class ProgramImporter{
                 -string path 
-                -Program parse(String code)
-                +Program importFromtxt(string relativePath)
+                -InnerProgram parse(String code)
+                +InnerProgram importFromtxt(string relativePath)
             }
             class ExamplePrograms{
-                +Program basic1
-                +Program basic2
-                +Program advanced1
-                +Program expert1
+                +InnerProgram basic1
+                +InnerProgram basic2
+                +InnerProgram advanced1
+                +InnerProgram expert1
                 ...
             }
         }
         Application *-- ProgramImporter
-        ProgramImporter ..> Program : creates
+        ProgramImporter ..> InnerProgram : creates
         Application *-- ExamplePrograms
-        ExamplePrograms --> Program
+        ExamplePrograms --> InnerProgram
         ProgramMetrics <.. Application : uses
     %%
 
@@ -42,7 +42,7 @@
                 +Body.Builder turn(Dir2 dir)
                 +Body.Builder move(int stepCount)
                 +Body.Builder repeat(int count, Body.Builder body)
-                +Body build()
+                +Body Build()
             }
             class ICommand{
                 +void ApplyOnWorld(ref World world)
@@ -76,12 +76,12 @@
 
     ICommand ..> World : affects
 
-    class Program{
+    class InnerProgram{
         +WorldState execute()
     }
-    Program --> Body : 1 commands
-    Program --> World : 1 startWorld
-    %%ProgramMetrics <.. Program
+    InnerProgram --> Body : 1 commands
+    InnerProgram --> World : 1 startWorld
+    %%ProgramMetrics <.. InnerProgram
 
 
     %%region World
@@ -93,7 +93,7 @@
                 +void MoveForward(int dist)
             }
             class WorldSettings{
-                %% Data that can't change while the program is running
+                %% Data that can't change while the Innerprogram is running
             }
             class WorldState{
                 %% Data that can be changed by the program
@@ -123,7 +123,7 @@
         IEventTrace <|.. MoveTrace
     %%
 
-    Program ..> WorldState
+    InnerProgram ..> WorldState
 
     %%region Geometry2D
         namespace namespace_Geometry2D{

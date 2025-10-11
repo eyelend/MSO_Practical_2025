@@ -22,6 +22,7 @@ namespace MSO_P2_Code.World
             this.playerState = playerState;
             trace = new();
         }
+        public WorldState() : this(new PlayerState()) { }
 
         #region commands
         public void TurnLeft()

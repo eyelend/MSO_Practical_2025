@@ -10,17 +10,22 @@ namespace MSO_P2_Code.Command
     internal class Repeat : ICommand
     {
         int count;
-        ICommand[] body;
-        public Repeat(int count, ICommand[] body)
+        //ICommand[] body;
+        Body body;
+        public Repeat(int count, Body body)
         {
             this.count = count;
             this.body = body;
         }
+        public Repeat(int count, ICommand[] body)
+        {
+            this.count = count;
+            this.body = new Body.Builder().FromCommands(body).Build();
+        }
         public void ApplyOnWorld(ref ActualWorld world)
         {
             for (int i = 0; i < count; i++)
-                foreach (ICommand command in body)
-                    command.ApplyOnWorld(ref world);
+                body.ApplyOnWorld(ref world);
         }
     }
 }

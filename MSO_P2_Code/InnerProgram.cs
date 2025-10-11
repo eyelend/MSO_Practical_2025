@@ -5,19 +5,21 @@ namespace MSO_P2_Code
 {
     internal class InnerProgram
     {
-        ICommand[] commands;
+        //ICommand[] commands;
+        Body commands;
         ActualWorld startWorld;
 
-        public InnerProgram(ICommand[] commands, ActualWorld startWorld)
+        public InnerProgram(Body commands, ActualWorld startWorld)
         {
             this.commands = commands;
             this.startWorld = startWorld;
         }
+        public InnerProgram(Body commands) : this(commands, new ActualWorld()) { }
+
         public WorldState Execute()
         {
             ActualWorld world = startWorld.CopyState();
-            foreach (ICommand c in commands)
-                c.ApplyOnWorld(ref world);
+            commands.ApplyOnWorld(ref world);
             return world.state;
         }
         public ProgramMetrics GetMetrics()

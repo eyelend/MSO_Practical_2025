@@ -39,9 +39,11 @@ namespace MSO_P2_Code.Applic
                 {
                     case ConsoleKey.E:
                         //todo
+                        Console.WriteLine("Not implemented yet");
                         break;
                     case ConsoleKey.C:
                         //todo
+                        Console.WriteLine("Not implemented yet");
                         break;
                     default:
                         Console.WriteLine("Invalid answer. Try again.");
