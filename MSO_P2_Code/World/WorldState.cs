@@ -44,7 +44,12 @@ namespace MSO_P2_Code.World
 
         public WorldState Copy()
         {
-            throw new NotImplementedException();
+            WorldState result = new(playerState.Copy());
+            foreach (IEventTrace eventTrace in this.trace)
+            {
+                result.trace.Enqueue(eventTrace);
+            }
+            return result;
         }
     }
 }

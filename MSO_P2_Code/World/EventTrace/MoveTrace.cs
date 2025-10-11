@@ -17,7 +17,7 @@ namespace MSO_P2_Code.World.EventTrace
 
         public string TextualTrace()
         {
-            throw new NotImplementedException();
+            return "Move " + stepCount;
         }
     }
 }

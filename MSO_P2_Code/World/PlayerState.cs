@@ -18,16 +18,17 @@ namespace MSO_P2_Code.World
             Dir = dir;
         }
         public PlayerState() : this((0, 0), Dir4.East) { }
+        public PlayerState Copy() => new PlayerState(Pos, Dir);
 
 
         #region commands
         public void TurnLeft()
         {
-            Dir.Rotate(Dir2.Left);
+            Dir = Dir.Rotated(Dir2.Left);
         }
         public void TurnRight()
         {
-            Dir.Rotate(Dir2.Left);
+            Dir = Dir.Rotated(Dir2.Right);
         }
         public void MoveForward(int dist)
         {

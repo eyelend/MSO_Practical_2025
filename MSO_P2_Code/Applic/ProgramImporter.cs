@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,23 +11,40 @@ namespace MSO_P2_Code.Applic
 {
     internal class ProgramImporter
     {
+        string codeFolderPath = "..\\..\\..\\ExampleFiles\\";
         public string importFromtxt(string fileName)
         {
-            string code;
             StreamReader stream;
-            try
+            if (!TryFindPath(fileName, out stream))
             {
-                stream = new StreamReader(fileName);
-            }
-            catch (FileNotFoundException e)
-            {
-                Console.WriteLine(e.Message);
+                Console.WriteLine("Error: Failed to find the given file.");
                 Console.WriteLine("Continuing with another program.");
-                stream = new StreamReader("..\\..\\..\\ExampleFiles\\Code.txt");
+                stream = new StreamReader(codeFolderPath + "Code.txt");
             }
-            code = stream.ReadToEnd();
+            string code = stream.ReadToEnd();
             stream.Close();
             return code;
+        }
+        private bool TryFindPath(string file, out StreamReader output)
+        {
+            string[] attempts = {
+                file,
+                codeFolderPath + file,
+                codeFolderPath + file + ".txt",
+            };
+            foreach (string path in attempts)
+            {
+                try
+                {
+                    output = new StreamReader(path);
+                    return true; //success
+                }
+                catch
+                {
+                }
+            }
+            output = null;
+            return false; // failed to find the file
         }
 
         public InnerProgram Parse(string fileName)
@@ -90,11 +108,16 @@ namespace MSO_P2_Code.Applic
                             commands[j] = new Move(int.Parse(line.Split(' ')[1]));
                             j++; break;
                         case 'T':
-                            if (line.Split(' ')[1] == "right")
+                            string word1 = line.Split(' ')[1];
+                            if (word1.Substring(0,5) == "right")
                             {
                                 commands[j] = new Turn(Dir2.Right);
                             }
-                            else { commands[j] = new Turn(Dir2.Left); }
+                            else if (word1.Substring(0,4) == "left")
+                            {
+                                commands[j] = new Turn(Dir2.Left);
+                            }
+                            else throw new ParseFailException($"parse error in line {j}: {line}.   word1 = {word1}.");
                             j++; break;
                         case 'R':
                             (int x, int y) hole = nests.Dequeue();

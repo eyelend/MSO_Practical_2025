@@ -38,9 +38,21 @@ namespace MSO_P2_Code.Applic
                 switch (userInput)
                 {
                     case ConsoleKey.E:
-                        //todo
-                        Console.WriteLine("Not implemented yet");
+                        World.WorldState endState = program.Execute();
+
+                        StringBuilder traceText = new StringBuilder();
+                        foreach (World.EventTrace.IEventTrace et in endState.Trace)
+                        {
+                            traceText.Append(et.TextualTrace() + ", ");
+                        }
+                        traceText.Remove(traceText.Length - 2, 2);
+                        traceText.Append('.');
+                        Console.WriteLine(traceText.ToString());
+
+                        string dirAsText = endState.playerState.Dir.Match("north", "east", "south", "west");
+                        Console.WriteLine($"End state {endState.playerState.Pos} facing {dirAsText}.\n");
                         break;
+
                     case ConsoleKey.M:
                         Command.ProgramMetrics metrics = program.GetMetrics();
                         Console.WriteLine(
@@ -48,6 +60,7 @@ namespace MSO_P2_Code.Applic
                             $"maximum nesting level = {metrics.maxNestingLevel}.\n" +
                             $"number of repeat-commands = {metrics.repeatCommandCount}.\n");
                         break;
+
                     default:
                         Console.WriteLine("Invalid answer. Try again.");
                         stayInLoop = true;
