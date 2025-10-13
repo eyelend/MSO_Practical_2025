@@ -1,18 +1,18 @@
-﻿using System;
+﻿using MSO_P2_Code.Command;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MSO_P2_Code.Command;
-using MSO_P2_Code.World;
+using Body = MSO_P2_Code.Command.Body;
 
 namespace MSO_P2_Code.Applic
 {
     internal class ProgramImporter
     {
         string codeFolderPath = "..\\..\\..\\ExampleFiles\\";
-        public string importFromtxt(string fileName)
+        private string importFromtxt(string fileName)
         {
             StreamReader stream;
             if (!TryFindPath(fileName, out stream))
@@ -47,20 +47,16 @@ namespace MSO_P2_Code.Applic
             return false; // failed to find the file
         }
 
-        public InnerProgram Parse(string fileName)
+        public InnerProgram ParseProgram(string fileName)
         {
             string code = importFromtxt(fileName);
-            InnerProgram innerProgram;
-            ICommand[] commands;
             string[] strings = code.Split('\n');
 
-            commands = ParseCommands(strings); //converts string[] to ICommand[], deals with nested loops
-
-            innerProgram = new InnerProgram(new Body.Builder().FromCommands(commands).Build());
-            return innerProgram;
+            InnerProgram program = new InnerProgram(ParseCommandBody(strings).Build());
+            return program;
         }
 
-        public ICommand[] ParseCommands(string[] lines) //returns nested ICommand[] by using recursion
+        private Body.Builder ParseCommandBody(string[] lines) //returns nested ICommand[] by using recursion
         {
             int index = 0;
             int i = 0; // counts operations for array
@@ -95,7 +91,7 @@ namespace MSO_P2_Code.Applic
                 nest = false;
             }
 
-            ICommand[] commands = new ICommand[i];
+            Body.Builder commands = new Body.Builder();
 
             int j = 0;
             while (j < i)    //add the commands to the ICommand array
@@ -105,24 +101,24 @@ namespace MSO_P2_Code.Applic
                     switch (line[0])
                     {
                         case 'M':
-                            commands[j] = new Move(int.Parse(line.Split(' ')[1]));
+                            commands.move(int.Parse(line.Split(' ')[1]));
                             j++; break;
                         case 'T':
                             string word1 = line.Split(' ')[1];
-                            if (word1.Substring(0,5) == "right")
+                            if (word1.Substring(0, 5) == "right")
                             {
-                                commands[j] = new Turn(Dir2.Right);
+                                commands.turn(Dir2.Right);
                             }
-                            else if (word1.Substring(0,4) == "left")
+                            else if (word1.Substring(0, 4) == "left")
                             {
-                                commands[j] = new Turn(Dir2.Left);
+                                commands.turn(Dir2.Left);
                             }
                             else throw new ParseFailException($"parse error in line {j}: {line}.   word1 = {word1}.");
                             j++; break;
                         case 'R':
                             (int x, int y) hole = nests.Dequeue();
                             string[] subset = TrimFront(lines[hole.x..hole.y]);
-                            commands[j] = new Repeat(int.Parse(line.Split(' ')[1]), ParseCommands(subset));
+                            commands.repeat(int.Parse(line.Split(' ')[1]), ParseCommandBody(subset));
                             j++; break;
                         case ' ':
                             break;

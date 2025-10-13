@@ -30,7 +30,7 @@ namespace MSO_P2_Code.Applic
             string userInput = Console.ReadLine();
 
             if(!tryGetExampleProgram(userInput, out program))
-                program = programImporter.Parse(userInput);
+                program = programImporter.ParseProgram(userInput);
 
             return program;
 
