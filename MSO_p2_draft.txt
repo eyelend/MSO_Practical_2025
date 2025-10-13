@@ -166,12 +166,18 @@ Design patterns:
     - We introduced classes ProgramImporter and ExamplePrograms, because the code would have been more messy if we put all that data in the Application-class.
 
   Low coupling:
-    - We introduced interface IEventTrace where we could have reused ICommand and connected them only through World, so the world-classes could depend less on ICommand.
-    ...
+    - We introduced interface IEventTrace where we could have reused ICommand and connected them only through methods in World, so the world-classes could depend less on ICommand.
+    - Body uses the builder-pattern so classes can create Program-instances without needing to create all ICommand-instances themselves. 
 
 
 4.
-  ...
+  Task distribution:
+    Part 1: Mostly Aron.
+    Part 2: Mostly Aron.
+    Part 3: 
+      Mostly Abracha: ProgramImporter, program example files, ...
+      Mostly Aron: namespace Command, namespace World, ...
+    Part 4: ...
 
 
 

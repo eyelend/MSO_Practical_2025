@@ -49,6 +49,7 @@ namespace MSO_P2_Code.Command
                 commands.Enqueue(command);
                 return this;
             }
+            #region commands
             public Builder turn(Dir2 dir)
                 => AddCommand(new Turn(dir));
             public Builder move(int stepCount)
@@ -57,6 +58,13 @@ namespace MSO_P2_Code.Command
             {
                 return AddCommand(new Repeat(count, body.Build()));
             }
+            public Builder body(Builder addedBody)
+            {
+                foreach (ICommand c in addedBody.commands)
+                    this.commands.Enqueue(c);
+                return this;
+            }
+            #endregion commands
 
             public Builder FromCommands(ICollection<ICommand> commands) // Todo: remove this function for looser coupling
             {

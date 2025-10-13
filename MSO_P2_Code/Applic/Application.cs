@@ -13,17 +13,46 @@ namespace MSO_P2_Code.Applic
 
         public void Run()
         {
+            Console.Clear();
             InnerProgram program = AskForProgram();
             UseProgram(program);
-            Console.WriteLine("End of application.");
+
+            Console.WriteLine("End of application. Press 'r' to reset.");
+            if (Console.ReadKey().Key == ConsoleKey.R)
+                Run(); //another round
+            else return;
         }
 
         protected InnerProgram AskForProgram()
         {
-            Console.WriteLine("Enter the file you want to use:");
+            InnerProgram program;
+            Console.WriteLine("Enter the file you want to use. Examples of what you can ask:\nbasic2\nadvanced1\nCode.txt\nCode2\n");
             string userInput = Console.ReadLine();
-            InnerProgram ip = programImporter.Parse(userInput);
-            return ip;
+
+            if(!tryGetExampleProgram(userInput, out program))
+                program = programImporter.Parse(userInput);
+
+            return program;
+
+            bool tryGetExampleProgram(string input, out InnerProgram foundProgram)
+            {
+                (string, InnerProgram)[] matches = new (string, InnerProgram)[]
+                {
+                    ("basic1", examplePrograms.basic1),
+                    ("basic2", examplePrograms.basic2),
+                    ("advanced1", examplePrograms.advanced1),
+                    ("advanced2", examplePrograms.advanced2),
+                    ("expert1", examplePrograms.expert1)
+                };
+                foreach ((string name, InnerProgram prog) match in matches)
+                    if (input == match.name)
+                    {
+                        foundProgram = match.prog;
+                        return true;
+                    }
+                foundProgram = null;
+                return false; // failed to find a match
+            }
         }
 
         protected void UseProgram(InnerProgram program)

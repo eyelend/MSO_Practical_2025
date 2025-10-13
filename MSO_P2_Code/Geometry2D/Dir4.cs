@@ -38,6 +38,8 @@ namespace MSO_P2_Code.Geometry2D
         }
         #endregion instances
 
+        public static void Rotate(ref Dir4 subj, Dir2 dir)
+            => subj = subj.Rotated(dir);
         public (int x, int y) MovePoint((int x, int y) point, int dist)
         {
             (int x, int y) dirAsVec = this.ToVector();

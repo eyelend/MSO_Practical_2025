@@ -3,5 +3,4 @@ using MSO_P2_Code.Applic;
 
 new Application().Run();
 
-Console.WriteLine("Press any key to close.");
-Console.ReadKey();
+
