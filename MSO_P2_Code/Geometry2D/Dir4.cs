@@ -51,5 +51,6 @@ namespace MSO_P2_Code.Geometry2D
             this == South ? caseSouth :
             this == West ? caseWest :
             throw new Exception("Invalid direction");
+
     }
 }
