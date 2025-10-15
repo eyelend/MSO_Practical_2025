@@ -34,7 +34,7 @@ namespace MSO_P2_Code.World
         }
         public void MoveForward(int dist)
         {
-            // This is where settings might affect this event.
+            // This is where settings might affect this event, for example a wall that changes the distance moved.
             state.MoveForward(dist);
         }
         #endregion commands

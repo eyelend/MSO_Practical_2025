@@ -37,7 +37,7 @@ namespace MSO_P2_Code.Command
 
         public class Builder
         {
-            public Queue<ICommand> commands = new();
+            Queue<ICommand> commands = new();
             public Builder()
             {
 
