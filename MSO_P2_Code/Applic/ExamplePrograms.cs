@@ -14,7 +14,7 @@ namespace MSO_P2_Code.Applic
         public readonly InnerProgram
             basic1, basic2,
             advanced1, advanced2,
-            expert1;
+            expert1, expert2;
         private ExamplePrograms()
         {
             Body.Builder square1 = new Body.Builder()
@@ -29,6 +29,8 @@ namespace MSO_P2_Code.Applic
                 .turn(Dir2.Right)
                 .move(8);
 
+
+
             basic1 = new InnerProgram(bigAngle.Build());
             advanced1 = new InnerProgram(new Body.Builder()
                 .repeat(3, bigAngle)
@@ -42,6 +44,14 @@ namespace MSO_P2_Code.Applic
 
             basic2 = new InnerProgram(new Body.Builder().turn(Dir2.Left).Build());
             advanced2 = new InnerProgram(new Body.Builder().repeat(2, new Body.Builder().turn(Dir2.Left)).Build());
+            expert2 = new InnerProgram(new Body.Builder()
+                .repeat(2, new Body.Builder()
+                    .repeat(3, new Body.Builder()
+                        .move(1)
+                        )
+                    )
+                .turn(Dir2.Right)
+                .Build());
         }
     }
 }

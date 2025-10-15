@@ -65,17 +65,6 @@ namespace MSO_P2_Code.Command
                 return this;
             }
             #endregion commands
-
-            public Builder FromCommands(ICollection<ICommand> commands) // Todo: remove this function for looser coupling
-            {
-                // Todo: remove this function for looser coupling.
-                // Builder is supposed to be used from the outside without needing to input command-instances.
-                foreach (ICommand c in commands)
-                {
-                    AddCommand(c);
-                }
-                return this;
-            }
         }
     }
 }

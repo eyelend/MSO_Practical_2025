@@ -8,5 +8,6 @@ namespace MSO_P2_Code.World
 {
     internal class WorldSettings
     {
+        // empty now, but probably used in future versions. 
     }
 }

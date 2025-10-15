@@ -42,7 +42,8 @@ namespace MSO_P2_Code.Applic
                     ("basic2", examplePrograms.basic2),
                     ("advanced1", examplePrograms.advanced1),
                     ("advanced2", examplePrograms.advanced2),
-                    ("expert1", examplePrograms.expert1)
+                    ("expert1", examplePrograms.expert1),
+                    ("expert2", examplePrograms.expert2)
                 };
                 foreach ((string name, InnerProgram prog) match in matches)
                     if (input == match.name)
@@ -57,7 +58,7 @@ namespace MSO_P2_Code.Applic
 
         protected void UseProgram(InnerProgram program)
         {
-            Console.WriteLine("Wanna execute (E) or calculate metrics (M)?");
+            Console.WriteLine("Wanna execute (press E) or calculate metrics (press M)?");
             bool stayInLoop;
             do
             {
@@ -67,27 +68,11 @@ namespace MSO_P2_Code.Applic
                 switch (userInput)
                 {
                     case ConsoleKey.E:
-                        World.WorldState endState = program.Execute();
-
-                        StringBuilder traceText = new StringBuilder();
-                        foreach (World.EventTrace.IEventTrace et in endState.Trace)
-                        {
-                            traceText.Append(et.TextualTrace() + ", ");
-                        }
-                        traceText.Remove(traceText.Length - 2, 2);
-                        traceText.Append('.');
-                        Console.WriteLine(traceText.ToString());
-
-                        string dirAsText = endState.playerState.Dir.Match("north", "east", "south", "west");
-                        Console.WriteLine($"End state {endState.playerState.Pos} facing {dirAsText}.\n");
+                        Execute(program);
                         break;
 
                     case ConsoleKey.M:
-                        Command.ProgramMetrics metrics = program.GetMetrics();
-                        Console.WriteLine(
-                            $"\nnumber of commands = {metrics.commandCount}.\n" +
-                            $"maximum nesting level = {metrics.maxNestingLevel}.\n" +
-                            $"number of repeat-commands = {metrics.repeatCommandCount}.\n");
+                        ShowMetrics(program);
                         break;
 
                     default:
@@ -98,5 +83,31 @@ namespace MSO_P2_Code.Applic
             } while (stayInLoop);
 
         }
+
+        private void Execute(InnerProgram program)
+        {
+            World.WorldState endState = program.Execute();
+
+            StringBuilder traceText = new StringBuilder();
+            foreach (World.EventTrace.IEventTrace et in endState.Trace)
+            {
+                traceText.Append(et.TextualTrace() + ", ");
+            }
+            traceText.Remove(traceText.Length - 2, 2);
+            traceText.Append('.');
+            Console.WriteLine("\n" + traceText.ToString());
+
+            string dirAsText = endState.playerState.Dir.Match("north", "east", "south", "west");
+            Console.WriteLine($"End state {endState.playerState.Pos} facing {dirAsText}.\n");
+        }
+        private void ShowMetrics(InnerProgram program)
+        {
+            Command.ProgramMetrics metrics = program.GetMetrics();
+            Console.WriteLine(
+                $"\nnumber of commands = {metrics.commandCount}.\n" +
+                $"maximum nesting level = {metrics.maxNestingLevel}.\n" +
+                $"number of repeat-commands = {metrics.repeatCommandCount}.\n");
+        }
+
     }
 }
