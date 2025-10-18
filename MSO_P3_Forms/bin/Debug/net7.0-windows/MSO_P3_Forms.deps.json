@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v7.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v7.0": {
+      "MSO_P3_Forms/1.0.0": {
+        "dependencies": {
+          "MSO_P2_Code": "1.0.0"
+        },
+        "runtime": {
+          "MSO_P3_Forms.dll": {}
+        }
+      },
+      "MSO_P2_Code/1.0.0": {
+        "runtime": {
+          "MSO_P2_Code.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "MSO_P3_Forms/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "MSO_P2_Code/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
