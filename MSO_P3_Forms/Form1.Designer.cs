@@ -32,7 +32,7 @@
             buttonRun = new Button();
             buttonMetrics = new Button();
             textBoxOutput = new TextBox();
-            comboBox1 = new ComboBox();
+            comboBoxLoadProgram = new ComboBox();
             worldGrid = new TableLayoutPanel();
             SuspendLayout();
             // 
@@ -80,16 +80,17 @@
             textBoxOutput.TabIndex = 3;
             textBoxOutput.Text = "<output>";
             // 
-            // comboBox1
+            // comboBoxLoadProgram
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Items.AddRange(new object[] { "Basic", "Advanced", "Expert", "From file..." });
-            comboBox1.Location = new Point(12, 56);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(151, 28);
-            comboBox1.TabIndex = 4;
-            comboBox1.Tag = "";
-            comboBox1.Text = "Load Program";
+            comboBoxLoadProgram.FormattingEnabled = true;
+            comboBoxLoadProgram.Items.AddRange(new object[] { "Basic", "Advanced", "Expert", "From file..." });
+            comboBoxLoadProgram.Location = new Point(12, 56);
+            comboBoxLoadProgram.Name = "comboBoxLoadProgram";
+            comboBoxLoadProgram.Size = new Size(151, 28);
+            comboBoxLoadProgram.TabIndex = 4;
+            comboBoxLoadProgram.Tag = "";
+            comboBoxLoadProgram.Text = "Load Program";
+            comboBoxLoadProgram.SelectedIndexChanged += comboBoxLoadProgram_SelectedIndexChanged;
             // 
             // worldGrid
             // 
@@ -116,7 +117,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(915, 587);
             Controls.Add(worldGrid);
-            Controls.Add(comboBox1);
+            Controls.Add(comboBoxLoadProgram);
             Controls.Add(textBoxOutput);
             Controls.Add(buttonMetrics);
             Controls.Add(buttonRun);
@@ -133,7 +134,7 @@
         private Button buttonRun;
         private Button buttonMetrics;
         private TextBox textBoxOutput;
-        private ComboBox comboBox1;
+        private ComboBox comboBoxLoadProgram;
         private TableLayoutPanel worldGrid;
     }
 }

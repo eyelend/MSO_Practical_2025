@@ -21,3 +21,6 @@ C:\Users\gvdkk\Documents\UU\INCA p1\MSO\Practica\MSO_p2_Git\MSO_P3_Forms\obj\Deb
 C:\Users\gvdkk\Documents\UU\INCA p1\MSO\Practica\MSO_p2_Git\MSO_P3_Forms\obj\Debug\net7.0-windows\MSO_P3_Forms.pdb
 C:\Users\gvdkk\Documents\UU\INCA p1\MSO\Practica\MSO_p2_Git\MSO_P3_Forms\obj\Debug\net7.0-windows\MSO_P3_Forms.genruntimeconfig.cache
 C:\Users\gvdkk\Documents\UU\INCA p1\MSO\Practica\MSO_p2_Git\MSO_P3_Forms\obj\Debug\net7.0-windows\ref\MSO_P3_Forms.dll
+C:\Users\gvdkk\Documents\UU\INCA p1\MSO\Practica\MSO_p3_Git\MSO_P3_Forms\obj\Debug\net7.0-windows\MSO_P3_Forms.dll
+C:\Users\gvdkk\Documents\UU\INCA p1\MSO\Practica\MSO_p3_Git\MSO_P3_Forms\obj\Debug\net7.0-windows\refint\MSO_P3_Forms.dll
+C:\Users\gvdkk\Documents\UU\INCA p1\MSO\Practica\MSO_p3_Git\MSO_P3_Forms\obj\Debug\net7.0-windows\MSO_P3_Forms.pdb
