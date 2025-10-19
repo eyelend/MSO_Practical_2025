@@ -8,43 +8,51 @@ namespace MSO_P2_Code.GenericUI
 {
     public class UI1
     {
-        public interface IReceiver
+        public interface IDataBridge
         {
-            // Allows the model to make changes in the UI.
+            // Allows the model's generic UI to somewhat interact with the actual UI-elements.
             void SetTextBoxProgram(string text);
             void SetTextBoxOutput(string text);
+            string ReadTextBoxProgram();
         }
 
-        protected readonly IReceiver receiver;
-        public UI1(IReceiver receiver)
+        protected readonly IDataBridge dataBridge;
+        public UI1(IDataBridge dataBridge)
         {
-            this.receiver = receiver;
+            this.dataBridge = dataBridge;
         }
 
 
         public void SelectProgramBasic()
         {
             //todo
-            receiver.SetTextBoxProgram("There's supposed to be code here now.");
+            dataBridge.SetTextBoxProgram("There's supposed to be code here now.");
         }
         public void SelectProgramAdvanced()
         {
             //todo
-            receiver.SetTextBoxProgram("There's supposed to be code here now.");
+            dataBridge.SetTextBoxProgram("There's supposed to be code here now.");
         }
         public void SelectProgramExpert()
         {
             //todo
-            receiver.SetTextBoxProgram("There's supposed to be code here now.");
+            dataBridge.SetTextBoxProgram("There's supposed to be code here now.");
         }
 
-        public void ClickButtonRun()
+        public void ClickRun()
         {
             //todo
+            dataBridge.SetTextBoxOutput("Program log not implemented yet.");
         }
-        public void ClickButtonMetrics()
+        public void ClickMetrics()
         {
             //todo
+            dataBridge.SetTextBoxOutput("Metrics not implemented yet.");
+        }
+
+        protected string ReadTextBoxProgram()
+        {
+            return dataBridge.ReadTextBoxProgram();
         }
     }
 }

@@ -1,24 +1,24 @@
-using MSO_P2_Code.GenericUI;
+using UI1 = MSO_P2_Code.GenericUI.UI1;
 
 namespace MSO_P3_Forms
 {
     public partial class Form1 : Form
     {
-        private readonly MSO_P2_Code.GenericUI.UI1 linkToModel;
+        private readonly UI1 model;
         public Form1()
         {
             InitializeComponent();
-            linkToModel = new(new Receiver(this));
+            model = new(new DataBridge(this));
         }
 
         private void buttonRun_Click(object sender, EventArgs e)
         {
-            linkToModel.ClickButtonRun();
+            model.ClickRun();
         }
 
         private void buttonMetrics_Click(object sender, EventArgs e)
         {
-            linkToModel.ClickButtonMetrics();
+            model.ClickMetrics();
         }
 
         private void comboBoxLoadProgram_SelectedIndexChanged(object sender, EventArgs e)
@@ -33,11 +33,41 @@ namespace MSO_P3_Forms
 
             // actually handle the selection
             string selection = (string)uiElement.SelectedItem;
-            if (selection == basic) linkToModel.SelectProgramBasic();
-            else if (selection == advanced) linkToModel.SelectProgramAdvanced();
-            else if (selection == expert) linkToModel.SelectProgramExpert();
+            if (selection == basic) model.SelectProgramBasic();
+            else if (selection == advanced) model.SelectProgramAdvanced();
+            else if (selection == expert) model.SelectProgramExpert();
             else if (selection == "From file...") ;
             else throw new NotImplementedException($"Option '{selection}' not implemented");
         }
+
+
+
+
+
+        internal class DataBridge : UI1.IDataBridge
+        {
+            private readonly Form1 form1;
+            public DataBridge(Form1 form1)
+            {
+                this.form1 = form1;
+            }
+
+            public string ReadTextBoxProgram()
+            {
+                return form1.textBoxProgram.Text;
+            }
+
+            public void SetTextBoxOutput(string text)
+            {
+                form1.textBoxOutput.Text = text;
+            }
+
+            public void SetTextBoxProgram(string text)
+            {
+                form1.textBoxProgram.Text = text;
+            }
+
+        }
+
     }
 }
