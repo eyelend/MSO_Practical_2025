@@ -34,6 +34,7 @@
             textBoxOutput = new TextBox();
             comboBoxLoadProgram = new ComboBox();
             worldGrid = new TableLayoutPanel();
+            openFileDialog1 = new OpenFileDialog();
             SuspendLayout();
             // 
             // textBoxProgram
@@ -111,6 +112,10 @@
             worldGrid.Size = new Size(200, 200);
             worldGrid.TabIndex = 5;
             // 
+            // openFileDialog1
+            // 
+            openFileDialog1.FileName = "openFileDialog1";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -136,5 +141,6 @@
         private TextBox textBoxOutput;
         private ComboBox comboBoxLoadProgram;
         private TableLayoutPanel worldGrid;
+        private OpenFileDialog openFileDialog1;
     }
 }

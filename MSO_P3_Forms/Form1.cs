@@ -23,6 +23,8 @@ namespace MSO_P3_Forms
 
         private void comboBoxLoadProgram_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // todo: increase cohesion in this method.
+
             ComboBox uiElement = comboBoxLoadProgram;
             ComboBox.ObjectCollection collection = uiElement.Items;
             string basic = "Basic", advanced = "Advanced", expert = "Expert";
@@ -36,7 +38,14 @@ namespace MSO_P3_Forms
             if (selection == basic) model.SelectProgramBasic();
             else if (selection == advanced) model.SelectProgramAdvanced();
             else if (selection == expert) model.SelectProgramExpert();
-            else if (selection == "From file...") ;
+            else if (selection == "From file...")
+            {
+                openFileDialog1.ShowDialog();
+                Stream stream = openFileDialog1.OpenFile();
+                StreamReader reader = new(stream);
+                textBoxProgram.Text = reader.ReadToEnd();
+                reader.Close();
+            }
             else throw new NotImplementedException($"Option '{selection}' not implemented");
         }
 
