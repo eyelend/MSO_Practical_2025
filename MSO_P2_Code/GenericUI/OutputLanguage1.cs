@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MSO_P2_Code.Applic
+namespace MSO_P2_Code.GenericUI
 {
     internal class OutputLanguage1 : IOutputLanguage
     {

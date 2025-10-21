@@ -4,6 +4,33 @@ namespace MSO_P3_Forms
 {
     public partial class Form1 : Form
     {
+        class DataBridge : UI1.IDataBridge
+        {
+            private readonly Form1 form1;
+            public DataBridge(Form1 form1)
+            {
+                this.form1 = form1;
+            }
+
+            public string ReadTextBoxProgram()
+            {
+                return form1.textBoxProgram.Text;
+            }
+
+            public void SetTextBoxOutput(string text)
+            {
+                //form1.textBoxOutput.Text = text;
+                form1.textBoxOutput.Lines = text.Split('\n');
+            }
+
+            public void SetTextBoxProgram(string text)
+            {
+                //form1.textBoxProgram.Text = text;
+                form1.textBoxProgram.Lines = text.Split('\n');
+            }
+
+        }
+
         private readonly UI1 model;
         public Form1()
         {
@@ -11,6 +38,18 @@ namespace MSO_P3_Forms
             model = new(new DataBridge(this));
         }
 
+        private string ManuallyFindAndReadToEnd(OpenFileDialog odf)
+        {
+            odf.ShowDialog();
+            Stream stream = odf.OpenFile();
+            StreamReader reader = new(stream);
+            string fileContent = reader.ReadToEnd();
+            reader.Close();
+            return fileContent;
+        }
+
+
+        #region UIEvents
         private void buttonRun_Click(object sender, EventArgs e)
         {
             model.ClickRun();
@@ -39,45 +78,14 @@ namespace MSO_P3_Forms
             if (selection == basic) model.SelectProgramBasic();
             else if (selection == advanced) model.SelectProgramAdvanced();
             else if (selection == expert) model.SelectProgramExpert();
-            else if (selection == "From file...")
-            {
-                openFileDialog1.ShowDialog();
-                Stream stream = openFileDialog1.OpenFile();
-                StreamReader reader = new(stream);
-                textBoxProgram.Text = reader.ReadToEnd();
-                reader.Close();
-            }
+            else if (selection == "From file...") textBoxProgram.Text = ManuallyFindAndReadToEnd(openFileDialog1);
             else throw new NotImplementedException($"Option '{selection}' not implemented");
         }
 
-
-
-
-
-        internal class DataBridge : UI1.IDataBridge
+        private void buttonLoadExercise_Click(object sender, EventArgs e)
         {
-            private readonly Form1 form1;
-            public DataBridge(Form1 form1)
-            {
-                this.form1 = form1;
-            }
-
-            public string ReadTextBoxProgram()
-            {
-                return form1.textBoxProgram.Text;
-            }
-
-            public void SetTextBoxOutput(string text)
-            {
-                form1.textBoxOutput.Text = text;
-            }
-
-            public void SetTextBoxProgram(string text)
-            {
-                form1.textBoxProgram.Text = text;
-            }
-
+            model.SelectExercise(ManuallyFindAndReadToEnd(openFileDialog1));
         }
-
+        #endregion UIEvents
     }
 }

@@ -18,32 +18,41 @@ namespace MSO_P2_Code.GenericUI
         }
 
         private readonly ExamplePrograms examplePrograms;
-        private readonly ProgramImporter programImporter;
+        private readonly ProgramParser programParser;
         private readonly IOutputLanguage outputLanguage;
         protected readonly IDataBridge dataBridge;
         public UI1(IDataBridge dataBridge)
         {
             this.dataBridge = dataBridge;
             examplePrograms = ExamplePrograms.Instance;
-            programImporter = new ProgramImporter();
+            programParser = ProgramParser.Instance;
             outputLanguage = OutputLanguage1.Instance;
         }
 
 
+        private void SelectHardcodedProgram(InnerProgram program)
+        {
+            try
+            {
+                dataBridge.SetTextBoxProgram(programParser.UnParseProgram(program));
+            }
+            catch (NotImplementedException e)
+            {
+                dataBridge.SetTextBoxProgram("Error: \n" + e.Message);
+            }
+        }
         public void SelectProgramBasic()
         {
-            //todo
-            dataBridge.SetTextBoxProgram("There's supposed to be code here now.");
+            SelectHardcodedProgram(examplePrograms.basic1);
         }
         public void SelectProgramAdvanced()
         {
-            //todo
-            dataBridge.SetTextBoxProgram("There's supposed to be code here now.");
+            SelectHardcodedProgram(examplePrograms.advanced1);
+
         }
         public void SelectProgramExpert()
         {
-            //todo
-            dataBridge.SetTextBoxProgram("There's supposed to be code here now.");
+            SelectHardcodedProgram(examplePrograms.expert1);
         }
 
         public void ClickRun()
@@ -51,7 +60,7 @@ namespace MSO_P2_Code.GenericUI
             InnerProgram programFromBox;
             try
             {
-                programFromBox = programImporter.ParseProgram(dataBridge.ReadTextBoxProgram());
+                programFromBox = programParser.ParseProgram(dataBridge.ReadTextBoxProgram());
                 string output = outputLanguage.Execute(programFromBox);
                 dataBridge.SetTextBoxOutput(output);
 
@@ -71,6 +80,12 @@ namespace MSO_P2_Code.GenericUI
         protected string ReadTextBoxProgram()
         {
             return dataBridge.ReadTextBoxProgram();
+        }
+
+        public void SelectExercise(string fileContent)
+        {
+            //todo
+            dataBridge.SetTextBoxOutput("Exercise feature not implemented yet.");
         }
     }
 }

@@ -35,6 +35,7 @@
             comboBoxLoadProgram = new ComboBox();
             worldGrid = new TableLayoutPanel();
             openFileDialog1 = new OpenFileDialog();
+            buttonLoadExercise = new Button();
             SuspendLayout();
             // 
             // textBoxProgram
@@ -47,7 +48,7 @@
             // 
             // buttonRun
             // 
-            buttonRun.BackColor = Color.FromArgb(0, 194, 0);
+            buttonRun.BackColor = Color.FromArgb(0, 192, 0);
             buttonRun.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
             buttonRun.ForeColor = Color.White;
             buttonRun.Location = new Point(291, 348);
@@ -116,11 +117,25 @@
             // 
             openFileDialog1.FileName = "openFileDialog1";
             // 
+            // buttonLoadExercise
+            // 
+            buttonLoadExercise.BackColor = Color.FromArgb(192, 64, 0);
+            buttonLoadExercise.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            buttonLoadExercise.ForeColor = Color.FromArgb(255, 255, 128);
+            buttonLoadExercise.Location = new Point(12, 97);
+            buttonLoadExercise.Name = "buttonLoadExercise";
+            buttonLoadExercise.Size = new Size(131, 38);
+            buttonLoadExercise.TabIndex = 6;
+            buttonLoadExercise.Text = "Load Exercise\r\n";
+            buttonLoadExercise.UseVisualStyleBackColor = false;
+            buttonLoadExercise.Click += buttonLoadExercise_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(915, 587);
+            Controls.Add(buttonLoadExercise);
             Controls.Add(worldGrid);
             Controls.Add(comboBoxLoadProgram);
             Controls.Add(textBoxOutput);
@@ -142,5 +157,6 @@
         private ComboBox comboBoxLoadProgram;
         private TableLayoutPanel worldGrid;
         private OpenFileDialog openFileDialog1;
+        private Button buttonLoadExercise;
     }
 }
