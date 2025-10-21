@@ -8,8 +8,7 @@ namespace MSO_P2_Code.Applic
 {
     internal class ParseFailException : Exception
     {
-        public ParseFailException(string? message) : base(message)
-        {
-        }
+        public ParseFailException(string? message) : base(message) { }
+        public ParseFailException() : base() { }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MSO_P2_Code.Applic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,10 +17,16 @@ namespace MSO_P2_Code.GenericUI
             string ReadTextBoxProgram();
         }
 
+        private readonly ExamplePrograms examplePrograms;
+        private readonly ProgramImporter programImporter;
+        private readonly IOutputLanguage outputLanguage;
         protected readonly IDataBridge dataBridge;
         public UI1(IDataBridge dataBridge)
         {
             this.dataBridge = dataBridge;
+            examplePrograms = ExamplePrograms.Instance;
+            programImporter = new ProgramImporter();
+            outputLanguage = OutputLanguage1.Instance;
         }
 
 
@@ -41,8 +48,19 @@ namespace MSO_P2_Code.GenericUI
 
         public void ClickRun()
         {
-            //todo
-            dataBridge.SetTextBoxOutput("Program log not implemented yet.");
+            InnerProgram programFromBox;
+            try
+            {
+                programFromBox = programImporter.ParseProgram(dataBridge.ReadTextBoxProgram());
+                string output = outputLanguage.Execute(programFromBox);
+                dataBridge.SetTextBoxOutput(output);
+
+                //todo: show path on the form's grid.
+            }
+            catch (ParseFailException e)
+            {
+                dataBridge.SetTextBoxOutput("Parse error: " + e.Message);
+            }
         }
         public void ClickMetrics()
         {

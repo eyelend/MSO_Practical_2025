@@ -25,16 +25,17 @@ namespace MSO_P3_Forms
         {
             // todo: increase cohesion in this method.
 
-            ComboBox uiElement = comboBoxLoadProgram;
-            ComboBox.ObjectCollection collection = uiElement.Items;
+            if (comboBoxLoadProgram != (ComboBox)sender) throw new Exception("Misunderstanding 'sender'."); // verifying what 'sender' means
+            ComboBox comboBox = (ComboBox)sender; //comboBoxLoadProgram;
             string basic = "Basic", advanced = "Advanced", expert = "Expert";
 
             // simple test in case someone removed or misspelled a word 
+            ComboBox.ObjectCollection collection = comboBox.Items;
             if (!(collection.Contains(basic) && collection.Contains(advanced) && collection.Contains(expert)))
                 throw new Exception("Doesn't contain all hard-coded-example elements");
 
             // actually handle the selection
-            string selection = (string)uiElement.SelectedItem;
+            string selection = (string)comboBox.SelectedItem;
             if (selection == basic) model.SelectProgramBasic();
             else if (selection == advanced) model.SelectProgramAdvanced();
             else if (selection == expert) model.SelectProgramExpert();

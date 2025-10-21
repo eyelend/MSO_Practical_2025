@@ -47,17 +47,33 @@ namespace MSO_P2_Code.Applic
             return false; // failed to find the file
         }
 
-        public InnerProgram ParseProgram(string fileName)
+        public InnerProgram ImportProgram(string fileName)
         {
-            string code = importFromtxt(fileName);
+            return ParseProgram(importFromtxt(fileName));
+        }
+        public InnerProgram ParseProgram(string code)
+        {
             string[] strings = code.Split('\n');
 
-            InnerProgram program = new InnerProgram(ParseCommandBody(strings).Build());
-            return program;
+            try
+            {
+                InnerProgram program = new InnerProgram(ParseCommandBody(strings).Build());
+                return program;
+            }
+            catch (ParseFailException e)
+            {
+                throw e;
+            }
+            catch (Exception e)
+            {
+                throw new ParseFailException("Unknown parse error.\n" + e.Message);
+            }
         }
 
         private Body.Builder ParseCommandBody(string[] lines) //returns nested ICommand[] by using recursion
         {
+            // todo: increase cohesion in this method.
+
             int index = 0;
             int i = 0; // counts operations for array
             bool nest = false;
@@ -66,7 +82,8 @@ namespace MSO_P2_Code.Applic
 
             foreach (string line in lines) //count number of direct operations
             {
-                if (line[0] != ' ' && nest == false)
+                if (line.Length == 0) { }
+                else if (line[0] != ' ' && nest == false)
                 {
                     i++;
                 }
@@ -94,37 +111,46 @@ namespace MSO_P2_Code.Applic
             Body.Builder commands = new Body.Builder();
 
             int j = 0;
-            while (j < i)    //add the commands to the ICommand array
+            try
             {
-                foreach (string line in lines)
+                while (j < i)    //add the commands to the ICommand array
                 {
-                    switch (line[0])
+                    foreach (string line in lines)
                     {
-                        case 'M':
-                            commands.move(int.Parse(line.Split(' ')[1]));
-                            j++; break;
-                        case 'T':
-                            string word1 = line.Split(' ')[1];
-                            if (word1.Substring(0, 5) == "right")
-                            {
-                                commands.turn(Dir2.Right);
-                            }
-                            else if (word1.Substring(0, 4) == "left")
-                            {
-                                commands.turn(Dir2.Left);
-                            }
-                            else throw new ParseFailException($"parse error in line {j}: {line}.   word1 = {word1}.");
-                            j++; break;
-                        case 'R':
-                            (int x, int y) hole = nests.Dequeue();
-                            string[] subset = TrimFront(lines[hole.x..hole.y]);
-                            commands.repeat(int.Parse(line.Split(' ')[1]), ParseCommandBody(subset));
-                            j++; break;
-                        case ' ':
-                            break;
+                        switch (line[0])
+                        {
+                            case 'M':
+                                string distAsText = line.Split(' ')[1];
+                                try { commands.move(int.Parse(distAsText)); }
+                                catch { throw new ParseFailException($"Failed to parse '{distAsText}' as int in line {j}."); }
+                                j++; break;
+                            case 'T':
+                                string word1 = line.Split(' ')[1];
+                                if (word1.Substring(0, 5) == "right")
+                                {
+                                    commands.turn(Dir2.Right);
+                                }
+                                else if (word1.Substring(0, 4) == "left")
+                                {
+                                    commands.turn(Dir2.Left);
+                                }
+                                else throw new ParseFailException($"parse error in line {j}: {line}.   word1 = {word1}.");
+                                j++; break;
+                            case 'R':
+                                (int x, int y) hole = nests.Dequeue();
+                                string[] subset = TrimFront(lines[hole.x..hole.y]);
+                                commands.repeat(int.Parse(line.Split(' ')[1]), ParseCommandBody(subset));
+                                j++; break;
+                            case ' ':
+                                break;
+                            default:
+                                throw new ParseFailException("Unreadable line: " + j);
+                        }
                     }
                 }
-
+            }
+            catch (IndexOutOfRangeException){
+                throw new ParseFailException("Not done reading.");
             }
 
             return commands;
