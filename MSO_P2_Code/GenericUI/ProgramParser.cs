@@ -9,6 +9,42 @@ namespace MSO_P2_Code.GenericUI
 {
     internal class ProgramParser
     {
+        class BodyUnparser1 : ICommand.IAlgebra<string>
+        {
+            public string UnparseBody(Body body)
+                => body.Fold(this);
+
+            public string body(string[] parsedElements)
+            {
+                if (parsedElements.Length == 0) return "";
+
+                StringBuilder sb = new StringBuilder(parsedElements[0]);
+                foreach (string element in parsedElements[1..])
+                    sb.Append("\n" + element);
+                return sb.ToString();
+            }
+
+            public string move(int stepCount)
+            {
+                return "Move " + stepCount;
+            }
+
+            public string repeat(int count, string parsedBody)
+            {
+                StringBuilder sb = new StringBuilder("Repeat " + count);
+                foreach (string line in parsedBody.Split("\n"))
+                {
+                    sb.Append("\n    " + line);
+                }
+                return sb.ToString();
+            }
+
+            public string turn(Dir2 dir)
+            {
+                return "Turn " + dir switch { Dir2.Left => "left", Dir2.Right => "right" };
+            }
+        }
+
         public static readonly ProgramParser Instance = new();
         private ProgramParser() { }
 
@@ -32,7 +68,7 @@ namespace MSO_P2_Code.GenericUI
         }
         public string UnParseProgram(InnerProgram program)
         {
-            throw new NotImplementedException();
+            return program.FoldCommands(new BodyUnparser1());
         }
 
         private Body.Builder ParseCommandBody(string[] lines) //returns nested ICommand[] by using recursion

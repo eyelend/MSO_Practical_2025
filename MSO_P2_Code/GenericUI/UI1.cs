@@ -15,6 +15,11 @@ namespace MSO_P2_Code.GenericUI
             void SetTextBoxProgram(string text);
             void SetTextBoxOutput(string text);
             string ReadTextBoxProgram();
+
+            void BlockCell((int x, int y) p);
+            void AddGridTraceHorizontal(int y, int x0, int x1);
+            void AddGridTraceVertical(int x, int y0, int y1);
+            void SetCharacterPos((int x, int y) p);
         }
 
         private readonly ExamplePrograms examplePrograms;

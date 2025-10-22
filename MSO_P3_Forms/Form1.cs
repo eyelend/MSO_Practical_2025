@@ -16,19 +16,35 @@ namespace MSO_P3_Forms
             {
                 return form1.textBoxProgram.Text;
             }
-
             public void SetTextBoxOutput(string text)
             {
-                //form1.textBoxOutput.Text = text;
                 form1.textBoxOutput.Lines = text.Split('\n');
             }
-
             public void SetTextBoxProgram(string text)
             {
-                //form1.textBoxProgram.Text = text;
                 form1.textBoxProgram.Lines = text.Split('\n');
             }
 
+
+            public void AddGridTraceHorizontal(int y, int x0, int x1)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void AddGridTraceVertical(int x, int y0, int y1)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void BlockCell((int x, int y) p)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void SetCharacterPos((int x, int y) p)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private readonly UI1 model;
@@ -38,14 +54,26 @@ namespace MSO_P3_Forms
             model = new(new DataBridge(this));
         }
 
-        private string ManuallyFindAndReadToEnd(OpenFileDialog odf)
+        private string? ManuallyFindAndReadToEnd(OpenFileDialog odf)
         {
-            odf.ShowDialog();
-            Stream stream = odf.OpenFile();
-            StreamReader reader = new(stream);
-            string fileContent = reader.ReadToEnd();
-            reader.Close();
-            return fileContent;
+            switch (odf.ShowDialog())
+            {
+                case DialogResult.OK:
+                    Stream stream = odf.OpenFile();
+                    StreamReader reader = new(stream);
+                    string fileContent = reader.ReadToEnd();
+                    reader.Close();
+                    return fileContent;
+                case DialogResult.Cancel:
+                    return null;
+                default:
+                    throw new Exception();
+            }
+        }
+        private void ManuallyFindAndUse(OpenFileDialog odf, Action<string> use)
+        {
+            string? fileContent = ManuallyFindAndReadToEnd(odf);
+            if (fileContent != null) use(fileContent);
         }
 
 
@@ -78,13 +106,15 @@ namespace MSO_P3_Forms
             if (selection == basic) model.SelectProgramBasic();
             else if (selection == advanced) model.SelectProgramAdvanced();
             else if (selection == expert) model.SelectProgramExpert();
-            else if (selection == "From file...") textBoxProgram.Text = ManuallyFindAndReadToEnd(openFileDialog1);
+            else if (selection == "From file...")
+                //textBoxProgram.Text = ManuallyFindAndReadToEnd(openFileDialog1);
+                ManuallyFindAndUse(openFileDialog1, (string text) => textBoxProgram.Text = text);
             else throw new NotImplementedException($"Option '{selection}' not implemented");
         }
 
         private void buttonLoadExercise_Click(object sender, EventArgs e)
         {
-            model.SelectExercise(ManuallyFindAndReadToEnd(openFileDialog1));
+            ManuallyFindAndUse(openFileDialog1, model.SelectExercise);
         }
         #endregion UIEvents
     }

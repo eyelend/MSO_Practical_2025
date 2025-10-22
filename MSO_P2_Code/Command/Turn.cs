@@ -22,6 +22,10 @@ namespace MSO_P2_Code.Command
                 case Dir2.Right: world.TurnRight(); break;
             }
         }
+
+        public T Fold<T>(ICommand.IAlgebra<T> algebra)
+            => algebra.turn(dir);
+
         public ProgramMetrics GetMetrics()
         {
             return new ProgramMetrics(1, 0, 0);

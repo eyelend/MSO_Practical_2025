@@ -22,6 +22,12 @@ namespace MSO_P2_Code.Command
             for (int i = 0; i < count; i++)
                 body.ApplyOnWorld(ref world);
         }
+
+        public T Fold<T>(ICommand.IAlgebra<T> algebra)
+        {
+            return algebra.repeat(count, body.Fold(algebra));
+        }
+
         public ProgramMetrics GetMetrics()
         {
             ProgramMetrics bodyMet = body.GetMetrics();

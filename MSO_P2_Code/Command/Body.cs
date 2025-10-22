@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static MSO_P2_Code.Command.ICommand;
 
 namespace MSO_P2_Code.Command
 {
@@ -33,6 +34,18 @@ namespace MSO_P2_Code.Command
                     acc.repeatCommandCount + cMet.repeatCommandCount);
             }
             return acc;
+        }
+        public T Fold<T>(IAlgebra<T> algebra)
+        {
+            return algebra.body(map(commands, (ICommand c) => c.Fold(algebra)));
+            T2[] map<T1, T2>(T1[] inpArray, Func<T1, T2> f)
+            {
+                // applies f to every element of inpArray
+                T2[] result = new T2[inpArray.Length];
+                for (int i = 0; i < inpArray.Length; i++)
+                    result[i] = f(inpArray[i]);
+                return result;
+            }
         }
 
         public class Builder
@@ -66,5 +79,6 @@ namespace MSO_P2_Code.Command
             }
             #endregion commands
         }
+
     }
 }
