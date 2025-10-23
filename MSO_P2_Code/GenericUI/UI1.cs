@@ -20,6 +20,7 @@ namespace MSO_P2_Code.GenericUI
             void AddGridTraceHorizontal(int y, int x0, int x1);
             void AddGridTraceVertical(int x, int y0, int y1);
             void SetCharacterPos((int x, int y) p);
+            void ClearGrid();
         }
 
         private readonly ExamplePrograms examplePrograms;
@@ -60,26 +61,36 @@ namespace MSO_P2_Code.GenericUI
             SelectHardcodedProgram(examplePrograms.expert1);
         }
 
-        public void ClickRun()
+        private bool TryParseTextBoxProgram(out InnerProgram programFromBox)
         {
-            InnerProgram programFromBox;
             try
             {
                 programFromBox = programParser.ParseProgram(dataBridge.ReadTextBoxProgram());
-                string output = outputLanguage.Execute(programFromBox);
-                dataBridge.SetTextBoxOutput(output);
-
-                //todo: show path on the form's grid.
+                return true; //success
             }
             catch (ParseFailException e)
             {
                 dataBridge.SetTextBoxOutput("Parse error: " + e.Message);
+                programFromBox = null;
+                return false; // failure
             }
+
+        }
+        public void ClickRun()
+        {
+            if (!TryParseTextBoxProgram(out InnerProgram program))
+                return;
+            dataBridge.SetTextBoxOutput(outputLanguage.Execute(program));
+
+            //todo: show path on the form's grid.
+
+            dataBridge.SetCharacterPos(program.Execute().playerState.Pos);
         }
         public void ClickMetrics()
         {
-            //todo
-            dataBridge.SetTextBoxOutput("Metrics not implemented yet.");
+            if (!TryParseTextBoxProgram(out InnerProgram program))
+                return;
+            dataBridge.SetTextBoxOutput(outputLanguage.ShowMetrics(program));
         }
 
         protected string ReadTextBoxProgram()
@@ -89,6 +100,8 @@ namespace MSO_P2_Code.GenericUI
 
         public void SelectExercise(string fileContent)
         {
+            dataBridge.ClearGrid();
+            dataBridge.SetCharacterPos((0, 0));
             //todo
             dataBridge.SetTextBoxOutput("Exercise feature not implemented yet.");
         }

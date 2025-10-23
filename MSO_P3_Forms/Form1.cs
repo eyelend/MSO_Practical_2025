@@ -43,16 +43,38 @@ namespace MSO_P3_Forms
 
             public void SetCharacterPos((int x, int y) p)
             {
-                throw new NotImplementedException();
+                Control character = form1.player;
+                Size size = character.Size;
+                (int x, int y) newLoc = form1.worldGridBase.PutRectInMiddle((size.Width, size.Height), p);
+                character.Location = new Point(newLoc.x, newLoc.y);
+            }
+
+            public void ClearGrid()
+            {
+                form1.worldGridItems.Clear();
             }
         }
 
         private readonly UI1 model;
+        private readonly ControlSubset worldGridItems;
+        private GridBase2D worldGridBase;
         public Form1()
         {
             InitializeComponent();
             model = new(new DataBridge(this));
+            worldGridItems = new(this.Controls, new SortedSet<Control>());
+
+            // initialize worldGridBase
+            (int x, int y) gridPos = (worldGrid.Left, worldGrid.Top);
+            (int x, int y) gridCellCount = (worldGrid.ColumnCount, worldGrid.RowCount);
+            (int x, int y) cellSize = (worldGrid.Width / gridCellCount.x, worldGrid.Height / gridCellCount.y);
+            worldGridBase = new(gridPos, cellSize, gridCellCount);
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+        }
+
 
         private string? ManuallyFindAndReadToEnd(OpenFileDialog odf)
         {
@@ -117,5 +139,6 @@ namespace MSO_P3_Forms
             ManuallyFindAndUse(openFileDialog1, model.SelectExercise);
         }
         #endregion UIEvents
+
     }
 }

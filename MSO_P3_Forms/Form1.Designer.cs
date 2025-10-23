@@ -36,6 +36,7 @@
             worldGrid = new TableLayoutPanel();
             openFileDialog1 = new OpenFileDialog();
             buttonLoadExercise = new Button();
+            player = new Panel();
             SuspendLayout();
             // 
             // textBoxProgram
@@ -98,18 +99,22 @@
             // 
             worldGrid.BackColor = SystemColors.ControlLight;
             worldGrid.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
-            worldGrid.ColumnCount = 4;
-            worldGrid.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            worldGrid.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            worldGrid.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            worldGrid.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            worldGrid.ColumnCount = 6;
+            worldGrid.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16.666666F));
+            worldGrid.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16.666666F));
+            worldGrid.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16.666666F));
+            worldGrid.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16.666666F));
+            worldGrid.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16.666666F));
+            worldGrid.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 16.666666F));
             worldGrid.Location = new Point(587, 97);
             worldGrid.Name = "worldGrid";
-            worldGrid.RowCount = 4;
-            worldGrid.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            worldGrid.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            worldGrid.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            worldGrid.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            worldGrid.RowCount = 6;
+            worldGrid.RowStyles.Add(new RowStyle(SizeType.Percent, 16.666666F));
+            worldGrid.RowStyles.Add(new RowStyle(SizeType.Percent, 16.666666F));
+            worldGrid.RowStyles.Add(new RowStyle(SizeType.Percent, 16.666666F));
+            worldGrid.RowStyles.Add(new RowStyle(SizeType.Percent, 16.666666F));
+            worldGrid.RowStyles.Add(new RowStyle(SizeType.Percent, 16.666666F));
+            worldGrid.RowStyles.Add(new RowStyle(SizeType.Percent, 16.666666F));
             worldGrid.Size = new Size(200, 200);
             worldGrid.TabIndex = 5;
             // 
@@ -130,11 +135,20 @@
             buttonLoadExercise.UseVisualStyleBackColor = false;
             buttonLoadExercise.Click += buttonLoadExercise_Click;
             // 
+            // player
+            // 
+            player.BackColor = SystemColors.HotTrack;
+            player.Location = new Point(596, 45);
+            player.Name = "player";
+            player.Size = new Size(16, 16);
+            player.TabIndex = 7;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(915, 587);
+            Controls.Add(player);
             Controls.Add(buttonLoadExercise);
             Controls.Add(worldGrid);
             Controls.Add(comboBoxLoadProgram);
@@ -144,6 +158,7 @@
             Controls.Add(textBoxProgram);
             Name = "Form1";
             Text = "Learn to program!";
+            Load += Form1_Load;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -158,5 +173,6 @@
         private TableLayoutPanel worldGrid;
         private OpenFileDialog openFileDialog1;
         private Button buttonLoadExercise;
+        private Panel player;
     }
 }
