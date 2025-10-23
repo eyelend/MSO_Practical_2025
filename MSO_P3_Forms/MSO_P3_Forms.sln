@@ -8,6 +8,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MSO_P2_Code", "..\MSO_P2_Code\MSO_P2_Code.csproj", "{21E905BF-035E-427C-8DA9-ECD40690E4A8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MSO_P2_Tests", "..\MSO_P2_Tests\MSO_P2_Tests.csproj", "{9E9F0066-54F3-418A-8D6B-6D5E924E3BCF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{28A24FBB-E2C0-48CF-9A7C-DAA967190A92} = {28A24FBB-E2C0-48CF-9A7C-DAA967190A92}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

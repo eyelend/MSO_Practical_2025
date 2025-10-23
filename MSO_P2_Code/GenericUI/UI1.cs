@@ -40,7 +40,7 @@ namespace MSO_P2_Code.GenericUI
         {
             try
             {
-                dataBridge.SetTextBoxProgram(programParser.UnParseProgram(program));
+                dataBridge.SetTextBoxProgram(programParser.Unparse(program));
             }
             catch (NotImplementedException e)
             {
@@ -65,7 +65,7 @@ namespace MSO_P2_Code.GenericUI
         {
             try
             {
-                programFromBox = programParser.ParseProgram(dataBridge.ReadTextBoxProgram());
+                programFromBox = programParser.Parse(dataBridge.ReadTextBoxProgram());
                 return true; //success
             }
             catch (ParseFailException e)

@@ -50,7 +50,7 @@ namespace MSO_P2_Code.Applic
 
         public InnerProgram ImportProgram(string fileName)
         {
-            return parser.ParseProgram(importFromtxt(fileName));
+            return parser.Parse(importFromtxt(fileName));
         }
 
 

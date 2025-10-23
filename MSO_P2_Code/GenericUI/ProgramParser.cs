@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MSO_P2_Code.GenericUI
 {
-    internal class ProgramParser
+    internal class ProgramParser : IParser<InnerProgram>
     {
         class BodyUnparser1 : ICommand.IAlgebra<string>
         {
@@ -48,7 +48,7 @@ namespace MSO_P2_Code.GenericUI
         public static readonly ProgramParser Instance = new();
         private ProgramParser() { }
 
-        public InnerProgram ParseProgram(string code)
+        public InnerProgram Parse(string code)
         {
             string[] strings = code.Split('\n');
 
@@ -57,19 +57,20 @@ namespace MSO_P2_Code.GenericUI
                 InnerProgram program = new InnerProgram(ParseCommandBody(strings).Build());
                 return program;
             }
-            catch (ParseFailException e)
+            catch (ParseFailException)
             {
-                throw e;
+                throw;
             }
             catch (Exception e)
             {
                 throw new ParseFailException("Unknown parse error.\n" + e.Message);
             }
         }
-        public string UnParseProgram(InnerProgram program)
+        public string Unparse(InnerProgram program)
         {
             return program.FoldCommands(new BodyUnparser1());
         }
+
 
         private Body.Builder ParseCommandBody(string[] lines) //returns nested ICommand[] by using recursion
         {
@@ -139,7 +140,7 @@ namespace MSO_P2_Code.GenericUI
                                 j++; break;
                             case 'R':
                                 (int x, int y) hole = nests.Dequeue();
-                                string[] subset = TrimFront(lines[hole.x..hole.y]);
+                                string[] subset = TrimFront(lines[hole.x..hole.y], 4);
                                 commands.repeat(int.Parse(line.Split(' ')[1]), ParseCommandBody(subset));
                                 j++; break;
                             case ' ':
@@ -158,14 +159,90 @@ namespace MSO_P2_Code.GenericUI
             return commands;
         }
 
+        private Body.Builder ParseCommandBody2(string[] lines)
+        {
+            Body.Builder builder = new Body.Builder();
+            for (int lineIndex = 0; lineIndex < lines.Length; lineIndex++)
+            {
+                string currentLine = lines[lineIndex];
+                if (tryParseMove(currentLine, ref builder)) ;
+                else if (tryParseTurn(currentLine, ref builder)) ;
+                else if (tryParseRepeat(lines[lineIndex..], ref builder, out int bodySize))
+                    lineIndex += bodySize;
+                else throw new ParseFailException("Parse error at line " + lineIndex);
+            }
 
-        private string[] TrimFront(string[] lines) // removes 4 white spaces from the front of each string
+            return builder;
+
+
+            bool tryParseMove(string line, ref Body.Builder builder)
+            {
+                try
+                {
+                    if (!(line[..4] == "Move")) return false;
+                    int stepCount = int.Parse(line[5..]);
+                    builder.move(stepCount);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+            bool tryParseTurn(string line, ref Body.Builder builder)
+            {
+                try
+                {
+                    if (!(line[..4] == "Turn")) return false;
+
+                    Dir2 dir;
+                    if (line[5..9] == "left") dir = Dir2.Left;
+                    else if (line[5..10] == "right") dir = Dir2.Right;
+                    else return false;
+
+                    builder.turn(dir);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+            bool tryParseRepeat(string[] lines, ref Body.Builder builder, out int bodySize)
+            {
+                bodySize = int.MinValue;
+                try
+                {
+                    // parse first line
+                    string line0 = lines[0];
+                    if (!(line0[..6] == "Repeat")) return false;
+                    int count = int.Parse(line0.Split(' ')[1]); //int.Parse(line0[7..]);
+
+                    string tab = "    ";
+                    int endOfBody;
+                    for (endOfBody = 1; lines[endOfBody].StartsWith(tab); endOfBody++) ;
+
+                    string[] bodyAsText = TrimFront(lines[1..endOfBody], tab.Length);
+                    Body.Builder bodyAsBuilder = ParseCommandBody2(bodyAsText);
+                    bodySize = endOfBody - 1;
+
+                    builder.repeat(count, bodyAsBuilder);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+        }
+
+        private string[] TrimFront(string[] lines, int tabSize) // removes 4 white spaces from the front of each string
         {
             string[] result = new string[lines.Length];
             int i = 0;
             foreach (string line in lines)
             {
-                string s = line.Substring(4);
+                string s = line.Substring(tabSize);
                 result[i] = s;
                 i++;
             }
