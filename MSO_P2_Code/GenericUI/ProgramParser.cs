@@ -11,9 +11,6 @@ namespace MSO_P2_Code.GenericUI
     {
         class BodyUnparser1 : ICommand.IAlgebra<string>
         {
-            public string UnparseBody(Body body)
-                => body.Fold(this);
-
             public string body(string[] parsedElements)
             {
                 if (parsedElements.Length == 0) return "";
@@ -50,12 +47,11 @@ namespace MSO_P2_Code.GenericUI
 
         public InnerProgram Parse(string code)
         {
-            string[] strings = code.Split('\n');
-
             try
             {
-                InnerProgram program = new InnerProgram(ParseCommandBody(strings).Build());
-                return program;
+                string[] codeLines = code.Split('\n');
+                Body programCommands = ParseCommandBody(codeLines).Build();
+                return new InnerProgram(programCommands);
             }
             catch (ParseFailException)
             {
@@ -72,7 +68,7 @@ namespace MSO_P2_Code.GenericUI
         }
 
 
-        private Body.Builder ParseCommandBody(string[] lines) //returns nested ICommand[] by using recursion
+        private Body.Builder ParseCommandBodyOld(string[] lines) //returns nested ICommand[] by using recursion
         {
             // todo: increase cohesion in this method.
 
@@ -141,7 +137,7 @@ namespace MSO_P2_Code.GenericUI
                             case 'R':
                                 (int x, int y) hole = nests.Dequeue();
                                 string[] subset = TrimFront(lines[hole.x..hole.y], 4);
-                                commands.repeat(int.Parse(line.Split(' ')[1]), ParseCommandBody(subset));
+                                commands.repeat(int.Parse(line.Split(' ')[1]), ParseCommandBodyOld(subset));
                                 j++; break;
                             case ' ':
                                 break;
@@ -159,7 +155,7 @@ namespace MSO_P2_Code.GenericUI
             return commands;
         }
 
-        private Body.Builder ParseCommandBody2(string[] lines)
+        private Body.Builder ParseCommandBody(string[] lines)
         {
             Body.Builder builder = new Body.Builder();
             for (int lineIndex = 0; lineIndex < lines.Length; lineIndex++)
@@ -169,7 +165,7 @@ namespace MSO_P2_Code.GenericUI
                 else if (tryParseTurn(currentLine, ref builder)) ;
                 else if (tryParseRepeat(lines[lineIndex..], ref builder, out int bodySize))
                     lineIndex += bodySize;
-                else throw new ParseFailException("Parse error at line " + lineIndex);
+                else throw new ParseFailException("Parse error at command " + lineIndex);
             }
 
             return builder;
@@ -220,10 +216,10 @@ namespace MSO_P2_Code.GenericUI
 
                     string tab = "    ";
                     int endOfBody;
-                    for (endOfBody = 1; lines[endOfBody].StartsWith(tab); endOfBody++) ;
+                    for (endOfBody = 1; endOfBody < lines.Length && lines[endOfBody].StartsWith(tab); endOfBody++) ;
 
                     string[] bodyAsText = TrimFront(lines[1..endOfBody], tab.Length);
-                    Body.Builder bodyAsBuilder = ParseCommandBody2(bodyAsText);
+                    Body.Builder bodyAsBuilder = ParseCommandBody(bodyAsText);
                     bodySize = endOfBody - 1;
 
                     builder.repeat(count, bodyAsBuilder);
