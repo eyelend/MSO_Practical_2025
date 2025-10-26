@@ -29,12 +29,12 @@ namespace MSO_P3_Forms
 
             public void AddGridTraceHorizontal(int y, int x0, int x1)
             {
-                throw new NotImplementedException();
+                form1.AddGridTraceHorizontal(y, x0, x1);
             }
 
             public void AddGridTraceVertical(int x, int y0, int y1)
             {
-                throw new NotImplementedException();
+                form1.AddGridTraceVertical(x, y0, y1);
             }
 
             public void BlockCell((int x, int y) p)
@@ -55,21 +55,28 @@ namespace MSO_P3_Forms
                 character.Location = new Point(newLoc.x, newLoc.y);
             }
 
-            public void ClearGrid()
+            public void ClearExerciseStuff()
             {
-                form1.worldGridItems.Clear();
+                form1.exerciseGridItems.Clear();
+            }
+
+            public void ClearTrace()
+            {
+                form1.playerTraceItems.Clear();
                 SetCharacterPos((0, 0));
             }
         }
 
         private readonly UI1 model;
-        private readonly ControlSubset worldGridItems;
+        private readonly ControlSubset exerciseGridItems;
+        private readonly ControlSubset playerTraceItems;
         private GridBase2D worldGridBase;
         public Form1()
         {
             InitializeComponent();
             model = new(new DataBridge(this));
-            worldGridItems = new(this.Controls, new List<Control>());
+            exerciseGridItems = new(this.Controls, new List<Control>());
+            playerTraceItems = new(this.Controls, new List<Control>());
 
             // initialize worldGridBase
             (int x, int y) gridPos = (worldGrid.Left + 1, worldGrid.Top + 1);
@@ -153,18 +160,24 @@ namespace MSO_P3_Forms
             result.Location = new Point(windowPos.x, windowPos.y);
             result.Size = new Size(size.x, size.y);
             result.BackColor = Color.FromArgb(color.r, color.g, color.b);
-            result.BringToFront();
+            //result.BringToFront();
             player.BringToFront();
             return result;
         }
-
+        private Panel AddNewPanelToGrid((int x, int y) windowPos, (int x, int y) size, (int r, int g, int b) color)
+        {
+            Panel result = NewPanel(windowPos, size, color);
+            exerciseGridItems.AddItem(result);
+            return result;
+        }
         public void BlockWorldCell((int x, int y) p)
         {
             (int x, int y) itemSize = (worldGridBase.cellSize.x - 2, worldGridBase.cellSize.y - 3);
             (int x, int y) windowPos = worldGridBase.PutRectInMiddle(itemSize, p);
             (int r, int g, int b) color = (128, 64, 96);
 
-            worldGridItems.AddItem(NewPanel(windowPos, itemSize, color));
+            //exerciseGridItems.AddItem(NewPanel(windowPos, itemSize, color));
+            AddNewPanelToGrid(windowPos, itemSize, color);
         }
 
         public void SetDestination((int x, int y) p)
@@ -173,5 +186,27 @@ namespace MSO_P3_Forms
             (int x, int y) windowPos = worldGridBase.PutRectInMiddle((item.Width, item.Height), p);
             item.Location = new Point(windowPos.x, windowPos.y);
         }
+
+        public void AddGridTraceHorizontal(int y, int x0, int x1)
+        {
+            //todo: combine with AddGridTraceVertical to reduce code duplication
+            if (x0 > x1) throw new Exception();
+            int thickness = 6;
+            (int x, int y) windowPos = worldGridBase.PutRectInMiddle((thickness, thickness), (x0, y));
+            int length = thickness + (x1 - x0) * worldGridBase.cellSize.x;
+            (int r, int g, int b) color = (0, 32, 128);
+            playerTraceItems.AddItem(NewPanel(windowPos, (length, thickness), color));
+        }
+
+        public void AddGridTraceVertical(int x, int y0, int y1)
+        {
+            if (y0 > y1) throw new Exception();
+            int thickness = 6;
+            (int x, int y) windowPos = worldGridBase.PutRectInMiddle((thickness, thickness), (x, y0));
+            int length = thickness + (y1 - y0) * worldGridBase.cellSize.y;
+            (int r, int g, int b) color = (0, 32, 128);
+            playerTraceItems.AddItem(NewPanel(windowPos, (thickness, length), color));
+        }
+
     }
 }

@@ -21,7 +21,8 @@ namespace MSO_P2_Code.GenericUI
             void AddGridTraceVertical(int x, int y0, int y1);
             void SetCharacterPos((int x, int y) p);
             void SetDestination((int x, int y) p);
-            void ClearGrid();
+            void ClearExerciseStuff();
+            void ClearTrace();
         }
 
         private readonly ExamplePrograms examplePrograms;
@@ -81,11 +82,32 @@ namespace MSO_P2_Code.GenericUI
         {
             if (!TryParseTextBoxProgram(out InnerProgram program))
                 return;
+            dataBridge.ClearTrace();
             dataBridge.SetTextBoxOutput(outputLanguage.Execute(program));
 
-            //todo: show path on the form's grid.
+            World.WorldState endState = program.Execute();
+            dataBridge.SetCharacterPos(endState.playerState.Pos);
 
-            dataBridge.SetCharacterPos(program.Execute().playerState.Pos);
+            //todo: show path on the form's grid.
+            (int x, int y)[] posTrace = endState.PosTrace;
+            for (int i = 1; i < posTrace.Length; i++)
+                MarkMove(posTrace[i - 1], posTrace[i]);
+            void MarkMove((int x, int y) start, (int x, int y) end)
+            {
+                if (start.x == end.x)
+                {
+                    (int y0, int y1) = sort(start.y, end.y);
+                    dataBridge.AddGridTraceVertical(start.x, y0, y1);
+                }
+                else if (start.y == end.y)
+                {
+                    (int x0, int x1) = sort(start.x, end.x);
+                    dataBridge.AddGridTraceHorizontal(start.y, x0, x1);
+                }
+                else throw new Exception();
+
+                (int, int) sort(int x, int y) => x <= y ? (x, y) : (y, x);
+            }
         }
         public void ClickMetrics()
         {
@@ -101,8 +123,8 @@ namespace MSO_P2_Code.GenericUI
 
         public void SelectExercise(string fileContent)
         {
-            dataBridge.ClearGrid();
-            dataBridge.SetCharacterPos((0, 0));
+            dataBridge.ClearExerciseStuff();
+            dataBridge.ClearTrace();
 
             // fill grid based on exercise info
             string[] rows = fileContent.Split("\r\n");
@@ -133,10 +155,25 @@ namespace MSO_P2_Code.GenericUI
                     }
                 }
             }
+            //mark edges of grid
+            for (int x = -1; x <= worldGrid.GetLength(0); x++)
+            {
+                dataBridge.BlockCell((x, -1));
+                dataBridge.BlockCell((x, worldGrid.GetLength(1)));
+            }
+            for (int y = 0; y < worldGrid.GetLength(1); y++)
+            {
+                dataBridge.BlockCell((-1, y));
+                dataBridge.BlockCell((worldGrid.GetLength(0), y));
+            }
 
             // todo: also store the exercise info somewhere in this model.
             dataBridge.SetTextBoxOutput("Exercise feature not fully implemented yet.");
 
+        }
+        public void UnselectExercise()
+        {
+            //todo: let the model know there's no exercise at the moment.
         }
     }
 }

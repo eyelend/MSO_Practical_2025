@@ -12,6 +12,10 @@ namespace MSO_P2_Code.World
         public readonly PlayerState playerState;
         Queue<IEventTrace> trace;
         public IEventTrace[] Trace => trace.ToArray();
+
+        Queue<(int x, int y)> posTrace;
+        public (int x, int y)[] PosTrace => posTrace.ToArray();
+
         public void AddToTrace(IEventTrace eventTrace)
         {
             trace.Enqueue(eventTrace);
@@ -21,6 +25,8 @@ namespace MSO_P2_Code.World
         {
             this.playerState = playerState;
             trace = new();
+            posTrace = new();
+            posTrace.Enqueue(playerState.Pos);
         }
         public WorldState() : this(new PlayerState()) { }
 
@@ -39,6 +45,7 @@ namespace MSO_P2_Code.World
         {
             AddToTrace(new MoveTrace(dist));
             playerState.MoveForward(dist);
+            posTrace.Enqueue(playerState.Pos);
         }
         #endregion commands
 

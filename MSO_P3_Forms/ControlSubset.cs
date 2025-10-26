@@ -21,6 +21,7 @@ namespace MSO_P3_Forms
 
         public void AddItem(Control item)
         {
+            if (item == null) return;
             fullControlCollection.Add(item);
             item.BringToFront();
             gridItems.Add(item);
