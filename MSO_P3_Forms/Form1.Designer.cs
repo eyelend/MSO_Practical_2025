@@ -37,6 +37,7 @@
             openFileDialog1 = new OpenFileDialog();
             buttonLoadExercise = new Button();
             player = new Panel();
+            destinationMark = new Label();
             SuspendLayout();
             // 
             // textBoxProgram
@@ -143,11 +144,23 @@
             player.Size = new Size(16, 16);
             player.TabIndex = 7;
             // 
+            // destinationMark
+            // 
+            destinationMark.AutoSize = true;
+            destinationMark.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
+            destinationMark.ForeColor = Color.Green;
+            destinationMark.Location = new Point(625, 66);
+            destinationMark.Name = "destinationMark";
+            destinationMark.Size = new Size(25, 28);
+            destinationMark.TabIndex = 0;
+            destinationMark.Text = "X";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(915, 587);
+            Controls.Add(destinationMark);
             Controls.Add(player);
             Controls.Add(buttonLoadExercise);
             Controls.Add(worldGrid);
@@ -174,5 +187,6 @@
         private OpenFileDialog openFileDialog1;
         private Button buttonLoadExercise;
         private Panel player;
+        private Label destinationMark;
     }
 }

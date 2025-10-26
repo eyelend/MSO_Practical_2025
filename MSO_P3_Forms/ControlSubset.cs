@@ -9,9 +9,9 @@ namespace MSO_P3_Forms
     internal class ControlSubset
     {
         protected readonly Control.ControlCollection fullControlCollection;
-        ISet<Control> gridItems;
+        ICollection<Control> gridItems;
 
-        public ControlSubset(Control.ControlCollection fullControlCollection, ISet<Control> gridItems)
+        public ControlSubset(Control.ControlCollection fullControlCollection, ICollection<Control> gridItems)
         {
             this.fullControlCollection = fullControlCollection;
             if (gridItems.Count != 0)
@@ -22,6 +22,7 @@ namespace MSO_P3_Forms
         public void AddItem(Control item)
         {
             fullControlCollection.Add(item);
+            item.BringToFront();
             gridItems.Add(item);
         }
 

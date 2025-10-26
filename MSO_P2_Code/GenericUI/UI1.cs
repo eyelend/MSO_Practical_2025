@@ -20,6 +20,7 @@ namespace MSO_P2_Code.GenericUI
             void AddGridTraceHorizontal(int y, int x0, int x1);
             void AddGridTraceVertical(int x, int y0, int y1);
             void SetCharacterPos((int x, int y) p);
+            void SetDestination((int x, int y) p);
             void ClearGrid();
         }
 
@@ -102,8 +103,40 @@ namespace MSO_P2_Code.GenericUI
         {
             dataBridge.ClearGrid();
             dataBridge.SetCharacterPos((0, 0));
-            //todo
-            dataBridge.SetTextBoxOutput("Exercise feature not implemented yet.");
+
+            // fill grid based on exercise info
+            string[] rows = fileContent.Split("\r\n");
+            if (rows.Length == 0 || rows[0].Length == 0)
+                throw new Exception("Empty exercise file");
+            char[,] worldGrid = new char[rows[0].Length, rows.Length];
+            for (int y = 0; y < worldGrid.GetLength(1); y++)
+            {
+                string row = rows[y];
+                if (row.Length != worldGrid.GetLength(0))
+                    throw new Exception($"Inconsistent grid width, row {y}.  {row.Length} != {worldGrid.GetLength(0)}");
+                for (int x = 0; x < worldGrid.GetLength(0); x++)
+                {
+                    char cellInfo = row[x];
+                    worldGrid[x, y] = cellInfo;
+                    switch (cellInfo)
+                    {
+                        case 'o': // empty cell
+                            break;
+                        case '+': // wall
+                            dataBridge.BlockCell((x, y));
+                            break;
+                        case 'x': //destination
+                            dataBridge.SetDestination((x, y));
+                            break;
+                        default:
+                            throw new ParseFailException($"Found invalid symbol '{cellInfo}' in supposed exercise file. \nAt point ({x},{y}). \nRow = '{row}'.");
+                    }
+                }
+            }
+
+            // todo: also store the exercise info somewhere in this model.
+            dataBridge.SetTextBoxOutput("Exercise feature not fully implemented yet.");
+
         }
     }
 }
