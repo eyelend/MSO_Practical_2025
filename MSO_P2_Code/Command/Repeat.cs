@@ -23,7 +23,7 @@ namespace MSO_P2_Code.Command
                 body.ApplyOnWorld(ref world);
         }
 
-        public T Fold<T>(ICommand.IAlgebra<T> algebra)
+        public T Fold<T,C>(ICommand.IAlgebra<T,C> algebra)
         {
             return algebra.repeat(count, body.Fold(algebra));
         }

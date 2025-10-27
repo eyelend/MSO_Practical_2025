@@ -35,6 +35,10 @@ namespace MSO_P2_Code.World
             Pos = Dir.MovePoint(Pos, dist);
         }
         #endregion commands
+        public (int x, int y) GetFacedPoint()
+        {
+            return Dir.MovePoint(Pos, 1);
+        }
 
     }
 }

@@ -24,7 +24,7 @@ namespace MSO_P2_Code
         }
         public ProgramMetrics GetMetrics()
             => commands.GetMetrics();
-        public T FoldCommands<T>(ICommand.IAlgebra<T> algebra)
+        public T FoldCommands<T,C>(ICommand.IAlgebra<T,C> algebra)
             => commands.Fold(algebra);
     }
 }

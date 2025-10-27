@@ -1,0 +1,10 @@
+Move 4
+Turn left
+Move 5
+Turn right
+Move 1
+Turn right
+RepeatUntil Not GridEdge
+    Move 1
+Turn left
+Move 1

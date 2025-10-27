@@ -127,34 +127,44 @@ namespace MSO_P2_Code.GenericUI
             dataBridge.ClearTrace();
 
             // fill grid based on exercise info
-            string[] rows = fileContent.Split("\r\n");
-            if (rows.Length == 0 || rows[0].Length == 0)
-                throw new Exception("Empty exercise file");
-            char[,] worldGrid = new char[rows[0].Length, rows.Length];
-            for (int y = 0; y < worldGrid.GetLength(1); y++)
+            char[,] worldGrid;
+            try
             {
-                string row = rows[y];
-                if (row.Length != worldGrid.GetLength(0))
-                    throw new Exception($"Inconsistent grid width, row {y}.  {row.Length} != {worldGrid.GetLength(0)}");
-                for (int x = 0; x < worldGrid.GetLength(0); x++)
+                string[] rows = fileContent.Split("\r\n");
+                if (rows.Length == 0 || rows[0].Length == 0)
+                    throw new ParseFailException("Empty exercise file");
+                worldGrid = new char[rows[0].Length, rows.Length];
+                for (int y = 0; y < worldGrid.GetLength(1); y++)
                 {
-                    char cellInfo = row[x];
-                    worldGrid[x, y] = cellInfo;
-                    switch (cellInfo)
+                    string row = rows[y];
+                    if (row.Length != worldGrid.GetLength(0))
+                        throw new ParseFailException($"Inconsistent grid width, row {y}.  {row.Length} != {worldGrid.GetLength(0)}");
+                    for (int x = 0; x < worldGrid.GetLength(0); x++)
                     {
-                        case 'o': // empty cell
-                            break;
-                        case '+': // wall
-                            dataBridge.BlockCell((x, y));
-                            break;
-                        case 'x': //destination
-                            dataBridge.SetDestination((x, y));
-                            break;
-                        default:
-                            throw new ParseFailException($"Found invalid symbol '{cellInfo}' in supposed exercise file. \nAt point ({x},{y}). \nRow = '{row}'.");
+                        char cellInfo = row[x];
+                        worldGrid[x, y] = cellInfo;
+                        switch (cellInfo)
+                        {
+                            case 'o': // empty cell
+                                break;
+                            case '+': // wall
+                                dataBridge.BlockCell((x, y));
+                                break;
+                            case 'x': //destination
+                                dataBridge.SetDestination((x, y));
+                                break;
+                            default:
+                                throw new ParseFailException($"Found invalid symbol '{cellInfo}' in supposed exercise file. \nAt point ({x},{y}). \nRow = '{row}'.");
+                        }
                     }
                 }
             }
+            catch(ParseFailException e)
+            {
+                dataBridge.SetTextBoxOutput(e.Message);
+                return;
+            }
+
             //mark edges of grid
             for (int x = -1; x <= worldGrid.GetLength(0); x++)
             {

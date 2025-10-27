@@ -23,7 +23,7 @@ namespace MSO_P2_Code.Command
             }
         }
 
-        public T Fold<T>(ICommand.IAlgebra<T> algebra)
+        public T Fold<T,C>(ICommand.IAlgebra<T,C> algebra)
             => algebra.turn(dir);
 
         public ProgramMetrics GetMetrics()

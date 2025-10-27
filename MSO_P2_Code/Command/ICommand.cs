@@ -11,9 +11,9 @@ namespace MSO_P2_Code.Command
     {
         void ApplyOnWorld(ref ActualWorld world);
         ProgramMetrics GetMetrics();
-        T Fold<T>(IAlgebra<T> algebra);
+        T Fold<T, Cond>(IAlgebra<T, Cond> algebra);
 
-        public interface IAlgebra<Result>
+        public interface IAlgebra<Result, Cond>
         {
             // Allows external classes to distinguish between ICommand-types without depending on those types.
             // If ICommand gets more realizations, you can add functions here to represent them.
@@ -21,6 +21,10 @@ namespace MSO_P2_Code.Command
             Result move(int stepCount);
             Result repeat(int count, Result body);
             Result body(Result[] commands);
+            Result repeatUntil(Cond conditionResult, Result body);
+            Cond facingBlock();
+            Cond facingGridEdge();
+            Cond Not(Cond input);
         }
     }
 }

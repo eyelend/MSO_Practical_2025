@@ -38,6 +38,7 @@
             buttonLoadExercise = new Button();
             player = new Panel();
             destinationMark = new Label();
+            buttonUnloadEx = new Button();
             SuspendLayout();
             // 
             // textBoxProgram
@@ -155,11 +156,25 @@
             destinationMark.TabIndex = 0;
             destinationMark.Text = "X";
             // 
+            // buttonUnloadEx
+            // 
+            buttonUnloadEx.BackColor = Color.FromArgb(192, 64, 0);
+            buttonUnloadEx.Font = new Font("Segoe UI", 7F, FontStyle.Bold, GraphicsUnit.Point);
+            buttonUnloadEx.ForeColor = Color.FromArgb(220, 220, 180);
+            buttonUnloadEx.Location = new Point(24, 141);
+            buttonUnloadEx.Name = "buttonUnloadEx";
+            buttonUnloadEx.Size = new Size(104, 27);
+            buttonUnloadEx.TabIndex = 8;
+            buttonUnloadEx.Text = "Unload Exercise\r\n";
+            buttonUnloadEx.UseVisualStyleBackColor = false;
+            buttonUnloadEx.Click += buttonUnloadEx_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(915, 587);
+            Controls.Add(buttonUnloadEx);
             Controls.Add(destinationMark);
             Controls.Add(player);
             Controls.Add(buttonLoadExercise);
@@ -188,5 +203,6 @@
         private Button buttonLoadExercise;
         private Panel player;
         private Label destinationMark;
+        private Button buttonUnloadEx;
     }
 }

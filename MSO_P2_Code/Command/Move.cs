@@ -19,7 +19,7 @@ namespace MSO_P2_Code.Command
             world.MoveForward(stepCount);
         }
 
-        public T Fold<T>(ICommand.IAlgebra<T> algebra)
+        public T Fold<T,C>(ICommand.IAlgebra<T,C> algebra)
             => algebra.move(stepCount);
 
         public ProgramMetrics GetMetrics()

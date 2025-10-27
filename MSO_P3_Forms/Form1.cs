@@ -57,7 +57,7 @@ namespace MSO_P3_Forms
 
             public void ClearExerciseStuff()
             {
-                form1.exerciseGridItems.Clear();
+                form1.ClearExerciseStuff();
             }
 
             public void ClearTrace()
@@ -152,7 +152,19 @@ namespace MSO_P3_Forms
         {
             ManuallyFindAndUse(openFileDialog1, model.SelectExercise);
         }
+        private void buttonUnloadEx_Click(object sender, EventArgs e)
+        {
+            ClearExerciseStuff();
+        }
         #endregion UIEvents
+
+        public void ClearExerciseStuff()
+        {
+            exerciseGridItems.Clear();
+            destinationMark.Left = this.Right;
+        }
+
+
 
         private Panel NewPanel((int x, int y) windowPos, (int x, int y) size, (int r, int g, int b) color)
         {
