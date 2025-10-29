@@ -85,10 +85,10 @@ namespace MSO_P2_Code.GenericUI
             dataBridge.ClearTrace();
             dataBridge.SetTextBoxOutput(outputLanguage.Execute(program));
 
+            //todo: For looser coupling, find the path in a way that makes us depend less on classes WorldState and InnerProgram.
             World.WorldState endState = program.Execute();
             dataBridge.SetCharacterPos(endState.playerState.Pos);
 
-            //todo: show path on the form's grid.
             (int x, int y)[] posTrace = endState.PosTrace;
             for (int i = 1; i < posTrace.Length; i++)
                 MarkMove(posTrace[i - 1], posTrace[i]);
@@ -114,11 +114,6 @@ namespace MSO_P2_Code.GenericUI
             if (!TryParseTextBoxProgram(out InnerProgram program))
                 return;
             dataBridge.SetTextBoxOutput(outputLanguage.ShowMetrics(program));
-        }
-
-        protected string ReadTextBoxProgram()
-        {
-            return dataBridge.ReadTextBoxProgram();
         }
 
         public void SelectExercise(string fileContent)

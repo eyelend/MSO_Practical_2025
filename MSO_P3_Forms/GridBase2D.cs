@@ -18,15 +18,15 @@ namespace MSO_P3_Forms
         }
 
 
-        (int x, int y) TransfWindowToCell((int x, int y) windowPoint, out (int x, int y) relativeWindowPoint)
+        public (int x, int y) TransfWindowToCell((int x, int y) windowPoint, out (int x, int y) relativeWindowPoint)
         {
             throw new NotImplementedException();
         }
-        (int x, int y) TransfCellToWindow((int x, int y) cellPoint)
+        public (int x, int y) TransfCellToWindow((int x, int y) cellPoint)
         {
             return (posTopLeft.x + cellSize.x * cellPoint.x, posTopLeft.y + cellSize.y * cellPoint.y);
         }
-        (int x, int y) TransfCellToWindow((float x, float y) cellPoint)
+        public (int x, int y) TransfCellToWindow((float x, float y) cellPoint)
         {
             //for a specific point inside a cell
             throw new NotImplementedException();

@@ -5,7 +5,6 @@ namespace MSO_P2_Code
 {
     internal class InnerProgram
     {
-        //ICommand[] commands;
         Body commands;
         ActualWorld startWorld;
 

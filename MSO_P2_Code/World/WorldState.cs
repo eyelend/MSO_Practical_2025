@@ -16,7 +16,7 @@ namespace MSO_P2_Code.World
         Queue<(int x, int y)> posTrace;
         public (int x, int y)[] PosTrace => posTrace.ToArray();
 
-        public void AddToTrace(IEventTrace eventTrace)
+        private void AddToTrace(IEventTrace eventTrace)
         {
             trace.Enqueue(eventTrace);
         }
