@@ -29,6 +29,11 @@ namespace MSO_P2_Code.World
             try { return settings.GetCell(facedPoint); }
             catch (IndexOutOfRangeException) { return null; }
         }
+        private bool TryGetFacedCell(out WorldCell? result)
+        {
+            result = TryGetFacedCell();
+            return result != null;
+        }
         #region commands
         public void TurnLeft()
         {
@@ -40,22 +45,25 @@ namespace MSO_P2_Code.World
         }
         public void MoveForward(int dist)
         {
-            //todo: Check if there's a wall.
+            // Check if we hit a wall or grid edge.
+            (int x, int y) scout = state.playerState.Pos;
+            for(int i = 0; i < dist; i++)
+            {
+                scout = state.playerState.Dir.MovePoint(scout, 1);
+                if (!settings.IsInside(scout)) throw new LeftGridException("Left grid at " + scout);
+                else if (settings.GetCell(scout) == WorldCell.Blocked) throw new BlockException("Hit wall at " + scout);
+            }
+
             state.MoveForward(dist);
-            //todo: Check whether we left the grid.
         }
         public bool FacingBlock()
         {
-            //todo
-            return false;
-            //return TryGetFacedCell() == WorldCell.Blocked;
+            return TryGetFacedCell() == WorldCell.Blocked;
         }
         public bool FacingGridEdge()
         {
-            //todo
             (int x, int y) p = state.playerState.GetFacedPoint();
-            return p.x < 0 || p.y < 0;
-            //return !TryGetFacedCell().HasValue;
+            return !settings.IsInside(p);
         }
         #endregion commands
     }

@@ -8,5 +8,12 @@ namespace MSO_P2_Code.World
 {
     internal class BlockException : Exception
     {
+        public BlockException()
+        {
+        }
+
+        public BlockException(string? message) : base(message)
+        {
+        }
     }
 }

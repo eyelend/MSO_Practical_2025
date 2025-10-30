@@ -26,6 +26,10 @@ namespace MSO_P2_Code.GenericUI
 
             string dirAsText = endState.playerState.Dir.Match("north", "east", "south", "west");
             traceText.Append($"\nEnd state {endState.playerState.Pos} facing {dirAsText}.");
+
+            (int x, int y)? destination = null; //todo: get destination from program's world
+            if (endState.playerState.Pos == destination)
+                traceText.Append("\nSuccessfully reached the destination");
             return traceText.ToString();
         }
         public string ShowMetrics(InnerProgram program)

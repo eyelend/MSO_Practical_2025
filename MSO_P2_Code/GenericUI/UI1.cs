@@ -1,4 +1,5 @@
 ﻿using MSO_P2_Code.Applic;
+using MSO_P2_Code.World;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,8 @@ namespace MSO_P2_Code.GenericUI
         private readonly ProgramParser programParser;
         private readonly IOutputLanguage outputLanguage;
         protected readonly IDataBridge dataBridge;
+
+        private WorldSettings loadedWorld = new();
         public UI1(IDataBridge dataBridge)
         {
             this.dataBridge = dataBridge;
@@ -67,7 +70,7 @@ namespace MSO_P2_Code.GenericUI
         {
             try
             {
-                programFromBox = programParser.Parse(dataBridge.ReadTextBoxProgram());
+                programFromBox = programParser.Parse(dataBridge.ReadTextBoxProgram(), loadedWorld);
                 return true; //success
             }
             catch (ParseFailException e)
@@ -104,7 +107,7 @@ namespace MSO_P2_Code.GenericUI
                     (int x0, int x1) = sort(start.x, end.x);
                     dataBridge.AddGridTraceHorizontal(start.y, x0, x1);
                 }
-                else throw new Exception();
+                else throw new Exception($"Somehow got a slanted move, from {start} to {end}.");
 
                 (int, int) sort(int x, int y) => x <= y ? (x, y) : (y, x);
             }
@@ -129,6 +132,7 @@ namespace MSO_P2_Code.GenericUI
                 if (rows.Length == 0 || rows[0].Length == 0)
                     throw new ParseFailException("Empty exercise file");
                 worldGrid = new char[rows[0].Length, rows.Length];
+                loadedWorld = new WorldSettings((rows[0].Length, rows.Length));
                 for (int y = 0; y < worldGrid.GetLength(1); y++)
                 {
                     string row = rows[y];
@@ -144,9 +148,12 @@ namespace MSO_P2_Code.GenericUI
                                 break;
                             case '+': // wall
                                 dataBridge.BlockCell((x, y));
+                                loadedWorld.TryBlockCell((x, y));
                                 break;
                             case 'x': //destination
                                 dataBridge.SetDestination((x, y));
+                                if (loadedWorld.Destination != null) throw new ParseFailException("Found a second destination at " + (x, y));
+                                else loadedWorld.TrySetDestination((x, y));
                                 break;
                             default:
                                 throw new ParseFailException($"Found invalid symbol '{cellInfo}' in supposed exercise file. \nAt point ({x},{y}). \nRow = '{row}'.");
@@ -172,13 +179,11 @@ namespace MSO_P2_Code.GenericUI
                 dataBridge.BlockCell((worldGrid.GetLength(0), y));
             }
 
-            // todo: also store the exercise info somewhere in this model.
-            dataBridge.SetTextBoxOutput("Exercise feature not fully implemented yet.");
-
         }
         public void UnselectExercise()
         {
             //todo: let the model know there's no exercise at the moment.
+            loadedWorld = new WorldSettings();
         }
     }
 }

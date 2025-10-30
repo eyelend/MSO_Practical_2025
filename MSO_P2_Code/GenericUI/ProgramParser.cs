@@ -1,5 +1,6 @@
 ﻿using MSO_P2_Code.Command;
 using MSO_P2_Code.Command.Condition;
+using MSO_P2_Code.World;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -83,13 +84,13 @@ namespace MSO_P2_Code.GenericUI
         public static readonly ProgramParser Instance = new();
         private ProgramParser() { }
 
-        public InnerProgram Parse(string code)
+        public InnerProgram Parse(string code, WorldSettings worldSettings)
         {
             try
             {
                 string[] codeLines = code.Split('\n');
                 Body programCommands = ParseCommandBody(codeLines).Build();
-                return new InnerProgram(programCommands);
+                return new InnerProgram(programCommands, new ActualWorld(worldSettings, new WorldState()));
             }
             catch (ParseFailException)
             {
@@ -100,6 +101,8 @@ namespace MSO_P2_Code.GenericUI
                 throw new ParseFailException("Unknown parse error.\n" + e.Message);
             }
         }
+        public InnerProgram Parse(string code)
+            => Parse(code, new WorldSettings());
         public string Unparse(InnerProgram program)
         {
             return program.FoldCommands(new BodyUnparser1());

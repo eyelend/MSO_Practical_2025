@@ -8,5 +8,12 @@ namespace MSO_P2_Code.World
 {
     internal class LeftGridException : Exception
     {
+        public LeftGridException()
+        {
+        }
+
+        public LeftGridException(string? message) : base(message)
+        {
+        }
     }
 }
