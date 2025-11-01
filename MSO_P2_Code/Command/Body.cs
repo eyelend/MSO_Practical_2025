@@ -22,20 +22,6 @@ namespace MSO_P2_Code.Command
             foreach (ICommand c in commands)
                 c.ApplyOnWorld(ref world);
         }
-        public ProgramMetrics GetMetrics()
-        {
-            int max(int x1, int x2) => x1 >= x2 ? x1 : x2;
-            ProgramMetrics acc = new ProgramMetrics();
-            foreach (ICommand c in commands)
-            {
-                ProgramMetrics cMet = c.GetMetrics();
-                acc = new(
-                    acc.commandCount + cMet.commandCount,
-                    max(acc.maxNestingLevel, cMet.maxNestingLevel),
-                    acc.repeatCommandCount + cMet.repeatCommandCount);
-            }
-            return acc;
-        }
 
         private static T2[] Map<T1, T2>(T1[] inpArray, Func<T1, T2> f)
         {

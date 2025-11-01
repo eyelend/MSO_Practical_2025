@@ -29,9 +29,5 @@ namespace MSO_P2_Code.Command
         public T Fold<T>(ICommand.IAlgebraNoCondition<T> algebra)
             => algebra.FoldTurn(dir);
 
-        public ProgramMetrics GetMetrics()
-        {
-            return new ProgramMetrics(1, 0, 0);
-        }
     }
 }

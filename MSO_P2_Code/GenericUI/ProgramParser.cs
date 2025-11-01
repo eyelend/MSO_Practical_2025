@@ -253,7 +253,7 @@ namespace MSO_P2_Code.GenericUI
                     if (!(line0[..6] == "Repeat")) return false;
                     int count = int.Parse(line0.Split(' ')[1]);
 
-                    tryParseTabbedBody(lines[1..], out Body.Builder bodyAsBuilder, out bodySize);
+                    if (!tryParseTabbedBody(lines[1..], out Body.Builder bodyAsBuilder, out bodySize)) return false;
 
                     builder.repeat(count, bodyAsBuilder);
                     return true;
@@ -274,14 +274,13 @@ namespace MSO_P2_Code.GenericUI
                     if (!(line0[0] == "RepeatUntil")) return false;
                     if (!tryParseCondition(line0[1..], builder, out var condition)) return false;
 
-                    tryParseTabbedBody(lines[1..], out Body.Builder bodyAsBuilder, out bodySize);
+                    if (!tryParseTabbedBody(lines[1..], out Body.Builder bodyAsBuilder, out bodySize)) return false;
 
                     builder.repeatUntil(condition, bodyAsBuilder);
                     return true;
                 }
                 catch
                 {
-                    throw;
                     return false;
                 }
             }
@@ -296,14 +295,13 @@ namespace MSO_P2_Code.GenericUI
                     if (!(line0[0] == "If")) return false;
                     if (!tryParseCondition(line0[1..], builder, out var condition)) return false;
 
-                    tryParseTabbedBody(lines[1..], out Body.Builder bodyAsBuilder, out bodySize);
+                    if(!tryParseTabbedBody(lines[1..], out Body.Builder bodyAsBuilder, out bodySize)) return false;
 
                     builder._if(condition, bodyAsBuilder);
                     return true;
                 }
                 catch
                 {
-                    throw;
                     return false;
                 }
             }
@@ -346,7 +344,6 @@ namespace MSO_P2_Code.GenericUI
                 }
                 catch
                 {
-                    throw;
                     return false;
                 }
             }

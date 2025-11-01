@@ -29,10 +29,5 @@ namespace MSO_P2_Code.Command
         public T Fold<T>(ICommand.IAlgebraNoCondition<T> algebra)
             => algebra.FoldRepeat(count, body.Fold(algebra));
 
-        public ProgramMetrics GetMetrics()
-        {
-            ProgramMetrics bodyMet = body.GetMetrics();
-            return new ProgramMetrics(1 + bodyMet.commandCount, 1 + bodyMet.maxNestingLevel, 1 + bodyMet.repeatCommandCount);
-        }
     }
 }

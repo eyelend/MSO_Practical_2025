@@ -34,10 +34,5 @@ namespace MSO_P2_Code.Command
             return algebra.FoldIf(body.Fold(algebra));
         }
 
-        public ProgramMetrics GetMetrics()
-        {
-            ProgramMetrics bodyMet = body.GetMetrics();
-            return new ProgramMetrics(1 + bodyMet.commandCount, bodyMet.maxNestingLevel, bodyMet.repeatCommandCount);
-        }
     }
 }

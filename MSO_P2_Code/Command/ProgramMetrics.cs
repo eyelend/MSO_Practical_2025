@@ -29,7 +29,7 @@ namespace MSO_P2_Code.Command
                 1 + bodyMetrics.repeatCommandCount);
 
 
-        class Algebra : ICommand.IAlgebra<ProgramMetrics, object>
+        class Algebra : ICommand.IAlgebraNoCondition<ProgramMetrics>
         {
             public ProgramMetrics FoldBody(ProgramMetrics[] foldedCommands)
             {
@@ -45,14 +45,14 @@ namespace MSO_P2_Code.Command
                 return acc;
             }
 
-            public ProgramMetrics FoldIf(object foldedCondition, ProgramMetrics foldedBody)
+            public ProgramMetrics FoldIf(ProgramMetrics foldedBody)
             {
                 return new ProgramMetrics(1 + foldedBody.commandCount, foldedBody.maxNestingLevel, foldedBody.repeatCommandCount);
             }
 
             public ProgramMetrics FoldRepeat(int count, ProgramMetrics foldedBody)
                 => RepeatMetrics(foldedBody);
-            public ProgramMetrics FoldRepeatUntil(object foldedCondition, ProgramMetrics foldedBody)
+            public ProgramMetrics FoldRepeatUntil(ProgramMetrics foldedBody)
                 => RepeatMetrics(foldedBody);
 
 
@@ -60,12 +60,6 @@ namespace MSO_P2_Code.Command
                 => basicCommandmetrics;
             public ProgramMetrics FoldTurn(Dir2 dir)
                 => basicCommandmetrics;
-
-
-            public object FoldFacingBlock() => null;
-            public object FoldFacingGridEdge() => null;
-            public object FoldNot(object foldedInput) => null;
-
         }
     }
 }

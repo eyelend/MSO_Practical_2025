@@ -10,7 +10,6 @@ namespace MSO_P2_Code.Command
     internal interface ICommand
     {
         void ApplyOnWorld(ref ActualWorld world);
-        ProgramMetrics GetMetrics();
         T Fold<T, Cond>(IAlgebra<T, Cond> algebra);
         T Fold<T>(IAlgebraNoCondition<T> algebra);
 
