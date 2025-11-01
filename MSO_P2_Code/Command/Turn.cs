@@ -24,7 +24,7 @@ namespace MSO_P2_Code.Command
         }
 
         public T Fold<T,C>(ICommand.IAlgebra<T,C> algebra)
-            => algebra.turn(dir);
+            => algebra.FoldTurn(dir);
 
         public ProgramMetrics GetMetrics()
         {

@@ -27,8 +27,8 @@ namespace MSO_P2_Code.Command
 
         public T Fold<T,C>(ICommand.IAlgebra<T,C> algebra)
         {
-            ICondition.Algebra<C> commandAlgebra = new(algebra.facingBlock(), algebra.facingGridEdge(), algebra.Not);
-            return algebra.repeatUntil(stopCondition.Fold(commandAlgebra), body.Fold(algebra));
+            ICondition.Algebra<C> commandAlgebra = new(algebra.FoldFacingBlock(), algebra.FoldFacingGridEdge(), algebra.FoldNot);
+            return algebra.FoldRepeatUntil(stopCondition.Fold(commandAlgebra), body.Fold(algebra));
             throw new NotImplementedException();
         }
 

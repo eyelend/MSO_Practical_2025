@@ -38,7 +38,7 @@ namespace MSO_P2_Code.Command
         }
         public T Fold<T,C>(IAlgebra<T,C> algebra)
         {
-            return algebra.body(map(commands, (ICommand c) => c.Fold(algebra)));
+            return algebra.FoldBody(map(commands, (ICommand c) => c.Fold(algebra)));
             T2[] map<T1, T2>(T1[] inpArray, Func<T1, T2> f)
             {
                 // applies f to every element of inpArray
@@ -75,6 +75,10 @@ namespace MSO_P2_Code.Command
             public Builder repeatUntil(ICondition condition, Builder body)
             {
                 return AddCommand(new RepeatUntil(condition, body.Build()));
+            }
+            public Builder _if(ICondition condition, Builder body)
+            {
+                return AddCommand(new If(condition, body.Build()));
             }
             public Builder body(Builder addedBody)
             {

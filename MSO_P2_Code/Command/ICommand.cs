@@ -17,14 +17,15 @@ namespace MSO_P2_Code.Command
         {
             // Allows external classes to distinguish between ICommand-types without depending on those types.
             // If ICommand gets more realizations, you can add functions here to represent them.
-            Result turn(Dir2 dir);
-            Result move(int stepCount);
-            Result repeat(int count, Result body);
-            Result body(Result[] commands);
-            Result repeatUntil(Cond conditionResult, Result body);
-            Cond facingBlock();
-            Cond facingGridEdge();
-            Cond Not(Cond input);
+            Result FoldTurn(Dir2 dir);
+            Result FoldMove(int stepCount);
+            Result FoldRepeat(int count, Result foldedBody);
+            Result FoldBody(Result[] foldedCommands);
+            Result FoldRepeatUntil(Cond foldedCondition, Result foldedBody);
+            Result FoldIf(Cond foldedCondition, Result foldedBody);
+            Cond FoldFacingBlock();
+            Cond FoldFacingGridEdge();
+            Cond FoldNot(Cond foldedInput);
         }
     }
 }

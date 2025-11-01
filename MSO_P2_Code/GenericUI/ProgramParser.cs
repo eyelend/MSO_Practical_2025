@@ -13,7 +13,7 @@ namespace MSO_P2_Code.GenericUI
     {
         class BodyUnparser1 : ICommand.IAlgebra<string, string>
         {
-            public string body(string[] parsedElements)
+            public string FoldBody(string[] parsedElements)
             {
                 if (parsedElements.Length == 0) return "";
 
@@ -23,49 +23,37 @@ namespace MSO_P2_Code.GenericUI
                 return sb.ToString();
             }
 
-            public string facingBlock()
+            public string FoldFacingBlock()
             {
                 return "WallAhead";
             }
 
-            public string facingGridEdge()
+            public string FoldFacingGridEdge()
             {
                 return "GridEdge";
             }
 
-            public string Not(string input)
+            public string FoldNot(string input)
             {
                 return "Not " + input;
             }
 
-            public string move(int stepCount)
+            public string FoldMove(int stepCount)
             {
                 return "Move " + stepCount;
             }
 
-            public string repeat(int count, string body)
+            public string FoldRepeat(int count, string body)
             {
-                /*StringBuilder sb = new StringBuilder("Repeat " + count);
-                foreach (string line in body.Split("\n"))
-                {
-                    sb.Append("\n    " + line);
-                }
-                return sb.ToString();*/
                 return "Repeat " + count + AddBody(body);
             }
 
-            public string repeatUntil(string conditionResult, string body)
+            public string FoldRepeatUntil(string conditionResult, string body)
             {
-                /*StringBuilder sb = new StringBuilder("RepeatUntil " + conditionResult);
-                foreach (string line in body.Split("\n"))
-                {
-                    sb.Append("\n    " + line);
-                }
-                return sb.ToString();*/
                 return "RepeatUntil " + conditionResult + AddBody(body);
             }
 
-            public string turn(Dir2 dir)
+            public string FoldTurn(Dir2 dir)
             {
                 return "Turn " + dir switch { Dir2.Left => "left", Dir2.Right => "right" };
             }
@@ -78,6 +66,11 @@ namespace MSO_P2_Code.GenericUI
                     sb.Append("\n    " + line);
                 }
                 return sb.ToString();
+            }
+
+            public string FoldIf(string condition, string body)
+            {
+                return "If " + condition + AddBody(body);
             }
         }
 
@@ -140,7 +133,7 @@ namespace MSO_P2_Code.GenericUI
                 }
                 index++;
             }
-            if (nest == true) // in case the program ends with a repeat operation
+            if (nest == true) // in case the program ends with a FoldRepeat operation
             {
                 repeatOp.end = index;
                 nests.Enqueue(repeatOp);
@@ -208,6 +201,8 @@ namespace MSO_P2_Code.GenericUI
                 else if (tryParseRepeat(lines[lineIndex..], ref builder, out bodySize))
                     lineIndex += bodySize;
                 else if (tryParseRepeatUntil(lines[lineIndex..], ref builder, out bodySize))
+                    lineIndex += bodySize;
+                else if (tryParseIf(lines[lineIndex..], ref builder, out bodySize))
                     lineIndex += bodySize;
                 else throw new ParseFailException("Parse error at command " + lineIndex);
             }
@@ -282,6 +277,28 @@ namespace MSO_P2_Code.GenericUI
                     tryParseTabbedBody(lines[1..], out Body.Builder bodyAsBuilder, out bodySize);
 
                     builder.repeatUntil(condition, bodyAsBuilder);
+                    return true;
+                }
+                catch
+                {
+                    throw;
+                    return false;
+                }
+            }
+            bool tryParseIf(string[] lines, ref Body.Builder builder, out int bodySize)
+            {
+                bodySize = int.MinValue;
+                try
+                {
+                    // parse first line
+                    string[] line0 = lines[0].Split(' ');
+                    if (line0.Length < 2) return false;
+                    if (!(line0[0] == "If")) return false;
+                    if (!tryParseCondition(line0[1..], builder, out var condition)) return false;
+
+                    tryParseTabbedBody(lines[1..], out Body.Builder bodyAsBuilder, out bodySize);
+
+                    builder._if(condition, bodyAsBuilder);
                     return true;
                 }
                 catch
