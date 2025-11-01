@@ -8,12 +8,15 @@ namespace MSO_P2_Code.World
 {
     internal class BlockException : Exception
     {
-        public BlockException()
+        public readonly (int x, int y) pos;
+        public BlockException((int x, int y) pos) : base("Hit wall at " + pos)
         {
+            this.pos = pos;
         }
 
-        public BlockException(string? message) : base(message)
+        public BlockException((int x, int y) pos, string? message) : base(message)
         {
+            this.pos = pos;
         }
     }
 }

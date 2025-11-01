@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MSO_P2_Code.World;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace MSO_P2_Code.GenericUI
 {
     internal interface IOutputLanguage
     {
-        string Execute(InnerProgram program);
+        string ExecutionResult(WorldState endState);
         string ShowMetrics(InnerProgram program);
     }
 }

@@ -86,10 +86,20 @@ namespace MSO_P2_Code.GenericUI
             if (!TryParseTextBoxProgram(out InnerProgram program))
                 return;
             dataBridge.ClearTrace();
-            dataBridge.SetTextBoxOutput(outputLanguage.Execute(program));
 
-            //todo: For looser coupling, find the path in a way that makes us depend less on classes WorldState and InnerProgram.
-            World.WorldState endState = program.Execute();
+            World.WorldState endState;
+            try { endState = program.Execute(); }
+            catch (BlockException e)
+            {
+                dataBridge.SetTextBoxOutput(e.Message);
+                return;
+            }
+            catch (LeftGridException e)
+            {
+                dataBridge.SetTextBoxOutput(e.Message);
+                return;
+            }
+            dataBridge.SetTextBoxOutput(outputLanguage.ExecutionResult(endState));
             dataBridge.SetCharacterPos(endState.playerState.Pos);
 
             (int x, int y)[] posTrace = endState.PosTrace;

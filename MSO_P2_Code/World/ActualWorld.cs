@@ -50,8 +50,8 @@ namespace MSO_P2_Code.World
             for(int i = 0; i < dist; i++)
             {
                 scout = state.playerState.Dir.MovePoint(scout, 1);
-                if (!settings.IsInside(scout)) throw new LeftGridException("Left grid at " + scout);
-                else if (settings.GetCell(scout) == WorldCell.Blocked) throw new BlockException("Hit wall at " + scout);
+                if (!settings.IsInside(scout)) throw new LeftGridException(scout);
+                else if (settings.GetCell(scout) == WorldCell.Blocked) throw new BlockException(scout);
             }
 
             state.MoveForward(dist);

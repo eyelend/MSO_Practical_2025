@@ -11,9 +11,9 @@ namespace MSO_P2_Code.GenericUI
         public static readonly OutputLanguage1 Instance = new();
         private OutputLanguage1() { }
 
-        public string Execute(InnerProgram program)
+        public string ExecutionResult(World.WorldState endState)
         {
-            World.WorldState endState = program.Execute();
+            //World.WorldState endState = program.Execute();
 
             StringBuilder traceText = new StringBuilder();
             foreach (World.EventTrace.IEventTrace et in endState.Trace)

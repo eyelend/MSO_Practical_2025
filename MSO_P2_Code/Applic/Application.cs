@@ -70,7 +70,7 @@ namespace MSO_P2_Code.Applic
                 switch (userInput)
                 {
                     case ConsoleKey.E:
-                        Console.WriteLine("\n" + outputLanguage.Execute(program) + "\n");
+                        Console.WriteLine("\n" + outputLanguage.ExecutionResult(program.Execute()) + "\n");
                         break;
 
                     case ConsoleKey.M:

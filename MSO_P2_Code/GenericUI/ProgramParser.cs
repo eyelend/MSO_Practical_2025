@@ -256,15 +256,8 @@ namespace MSO_P2_Code.GenericUI
                     // parse first line
                     string line0 = lines[0];
                     if (!(line0[..6] == "Repeat")) return false;
-                    int count = int.Parse(line0.Split(' ')[1]); //int.Parse(line0[7..]);
+                    int count = int.Parse(line0.Split(' ')[1]);
 
-                    /*string tab = "    ";
-                    int endOfBody;
-                    for (endOfBody = 1; endOfBody < lines.Length && lines[endOfBody].StartsWith(tab); endOfBody++) ;
-
-                    string[] bodyAsText = TrimFront(lines[1..endOfBody], tab.Length);
-                    Body.Builder bodyAsBuilder = ParseCommandBody(bodyAsText);
-                    bodySize = endOfBody - 1;*/
                     tryParseTabbedBody(lines[1..], out Body.Builder bodyAsBuilder, out bodySize);
 
                     builder.repeat(count, bodyAsBuilder);
@@ -284,7 +277,7 @@ namespace MSO_P2_Code.GenericUI
                     string[] line0 = lines[0].Split(' ');
                     if (line0.Length < 2) return false;
                     if (!(line0[0] == "RepeatUntil")) return false;
-                    if (!tryParseCondition(line0[1..], builder, out Command.Condition.ICondition condition)) return false;
+                    if (!tryParseCondition(line0[1..], builder, out var condition)) return false;
 
                     tryParseTabbedBody(lines[1..], out Body.Builder bodyAsBuilder, out bodySize);
 
@@ -328,7 +321,7 @@ namespace MSO_P2_Code.GenericUI
                         condition = bodyAsBuilder.facingBlock();
                     else if (word0.StartsWith("GridEdge"))
                         condition = bodyAsBuilder.facingGridEdge();
-                    else if (word0.StartsWith("Not") && tryParseCondition(words[1..], bodyAsBuilder, out Command.Condition.ICondition inputCondition))
+                    else if (word0.StartsWith("Not") && tryParseCondition(words[1..], bodyAsBuilder, out var inputCondition))
                         condition = bodyAsBuilder.not(inputCondition);
                     else return false;
 

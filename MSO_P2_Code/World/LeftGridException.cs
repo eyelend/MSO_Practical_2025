@@ -8,12 +8,15 @@ namespace MSO_P2_Code.World
 {
     internal class LeftGridException : Exception
     {
-        public LeftGridException()
+        public readonly (int x, int y) pos;
+        public LeftGridException((int x, int y) pos) : base("Left grid at " + pos)
         {
+            this.pos = pos;
         }
 
-        public LeftGridException(string? message) : base(message)
+        public LeftGridException((int x, int y) pos, string? message) : base(message)
         {
+            this.pos = pos;
         }
     }
 }
