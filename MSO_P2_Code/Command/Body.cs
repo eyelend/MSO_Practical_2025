@@ -36,18 +36,25 @@ namespace MSO_P2_Code.Command
             }
             return acc;
         }
+
+        private static T2[] Map<T1, T2>(T1[] inpArray, Func<T1, T2> f)
+        {
+            // applies f to every element of inpArray
+            T2[] result = new T2[inpArray.Length];
+            for (int i = 0; i < inpArray.Length; i++)
+                result[i] = f(inpArray[i]);
+            return result;
+        }
         public T Fold<T,C>(IAlgebra<T,C> algebra)
         {
-            return algebra.FoldBody(map(commands, (ICommand c) => c.Fold(algebra)));
-            T2[] map<T1, T2>(T1[] inpArray, Func<T1, T2> f)
-            {
-                // applies f to every element of inpArray
-                T2[] result = new T2[inpArray.Length];
-                for (int i = 0; i < inpArray.Length; i++)
-                    result[i] = f(inpArray[i]);
-                return result;
-            }
+            return algebra.FoldBody(Map(commands, (ICommand c) => c.Fold(algebra)));
         }
+        public T Fold<T>(IAlgebraNoCondition<T> algebra)
+        {
+            return algebra.FoldBody(Map(commands, (ICommand c) => c.Fold(algebra)));
+        }
+
+        public bool IsEmpty() => commands.Length == 0;
 
         public class Builder
         {

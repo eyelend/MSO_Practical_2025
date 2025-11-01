@@ -12,6 +12,7 @@ namespace MSO_P2_Code.Command
         void ApplyOnWorld(ref ActualWorld world);
         ProgramMetrics GetMetrics();
         T Fold<T, Cond>(IAlgebra<T, Cond> algebra);
+        T Fold<T>(IAlgebraNoCondition<T> algebra);
 
         public interface IAlgebra<Result, Cond>
         {
@@ -26,6 +27,17 @@ namespace MSO_P2_Code.Command
             Cond FoldFacingBlock();
             Cond FoldFacingGridEdge();
             Cond FoldNot(Cond foldedInput);
+        }
+        public interface IAlgebraNoCondition<Result>
+        {
+            // Allows external classes to distinguish between ICommand-types without depending on those types.
+            // If ICommand gets more realizations, you can add functions here to represent them.
+            Result FoldTurn(Dir2 dir);
+            Result FoldMove(int stepCount);
+            Result FoldRepeat(int count, Result foldedBody);
+            Result FoldBody(Result[] foldedCommands);
+            Result FoldRepeatUntil(Result foldedBody);
+            Result FoldIf(Result foldedBody);
         }
     }
 }

@@ -22,7 +22,8 @@ namespace MSO_P2_Code
             return world.state;
         }
         public ProgramMetrics GetMetrics()
-            => commands.GetMetrics();
+            //=> commands.GetMetrics();
+            => ProgramMetrics.FromBody(commands);
         public T FoldCommands<T,C>(ICommand.IAlgebra<T,C> algebra)
             => commands.Fold(algebra);
     }

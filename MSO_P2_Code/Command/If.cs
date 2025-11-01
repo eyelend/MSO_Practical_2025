@@ -29,6 +29,11 @@ namespace MSO_P2_Code.Command
             return algebra.FoldIf(condition.Fold(commandAlgebra), body.Fold(algebra));
         }
 
+        public T Fold<T>(ICommand.IAlgebraNoCondition<T> algebra)
+        {
+            return algebra.FoldIf(body.Fold(algebra));
+        }
+
         public ProgramMetrics GetMetrics()
         {
             ProgramMetrics bodyMet = body.GetMetrics();

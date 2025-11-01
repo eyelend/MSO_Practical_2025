@@ -20,16 +20,24 @@ namespace MSO_P2_Code.Command
         }
         public void ApplyOnWorld(ref ActualWorld world)
         {
-            //while (stopCondition.Check(world))
-            for (int i = 0; !stopCondition.Check(world) && i < limit; i++)
+            if (body.IsEmpty()) return;
+            for (int i = 0; !stopCondition.Check(world); i++)
+            {
+                if (i >= limit)
+                    throw new Exception("We appear to be stuck in a loop");
                 body.ApplyOnWorld(ref world);
+            }
         }
 
         public T Fold<T,C>(ICommand.IAlgebra<T,C> algebra)
         {
             ICondition.Algebra<C> commandAlgebra = new(algebra.FoldFacingBlock(), algebra.FoldFacingGridEdge(), algebra.FoldNot);
             return algebra.FoldRepeatUntil(stopCondition.Fold(commandAlgebra), body.Fold(algebra));
-            throw new NotImplementedException();
+        }
+
+        public T Fold<T>(ICommand.IAlgebraNoCondition<T> algebra)
+        {
+            return algebra.FoldRepeatUntil(body.Fold(algebra));
         }
 
         public ProgramMetrics GetMetrics()

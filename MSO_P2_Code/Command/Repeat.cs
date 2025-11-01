@@ -10,7 +10,6 @@ namespace MSO_P2_Code.Command
     internal class Repeat : ICommand
     {
         int count;
-        //ICommand[] FoldBody;
         Body body;
         public Repeat(int count, Body body)
         {
@@ -27,6 +26,8 @@ namespace MSO_P2_Code.Command
         {
             return algebra.FoldRepeat(count, body.Fold(algebra));
         }
+        public T Fold<T>(ICommand.IAlgebraNoCondition<T> algebra)
+            => algebra.FoldRepeat(count, body.Fold(algebra));
 
         public ProgramMetrics GetMetrics()
         {
