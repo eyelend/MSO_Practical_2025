@@ -10,7 +10,7 @@ namespace MSO_P2_Code.GenericUI
 {
     public class UI1
     {
-        public interface IDataBridge
+        public interface IMediator
         {
             // Allows the model's generic UI to somewhat interact with the actual UI-elements.
             void SetTextBoxProgram(string text);
@@ -29,12 +29,12 @@ namespace MSO_P2_Code.GenericUI
         private readonly ExamplePrograms examplePrograms;
         private readonly ProgramParser programParser;
         private readonly IOutputLanguage outputLanguage;
-        protected readonly IDataBridge dataBridge;
+        protected readonly IMediator mediator;
 
         private WorldSettings loadedWorld = new();
-        public UI1(IDataBridge dataBridge)
+        public UI1(IMediator mediator)
         {
-            this.dataBridge = dataBridge;
+            this.mediator = mediator;
             examplePrograms = ExamplePrograms.Instance;
             programParser = ProgramParser.Instance;
             outputLanguage = OutputLanguage1.Instance;
@@ -45,11 +45,11 @@ namespace MSO_P2_Code.GenericUI
         {
             try
             {
-                dataBridge.SetTextBoxProgram(programParser.Unparse(program));
+                mediator.SetTextBoxProgram(programParser.Unparse(program));
             }
             catch (NotImplementedException e)
             {
-                dataBridge.SetTextBoxProgram("Error: \n" + e.Message);
+                mediator.SetTextBoxProgram("Error: \n" + e.Message);
             }
         }
         public void SelectProgramBasic()
@@ -70,12 +70,12 @@ namespace MSO_P2_Code.GenericUI
         {
             try
             {
-                programFromBox = programParser.Parse(dataBridge.ReadTextBoxProgram(), loadedWorld);
+                programFromBox = programParser.Parse(mediator.ReadTextBoxProgram(), loadedWorld);
                 return true; //success
             }
             catch (ParseFailException e)
             {
-                dataBridge.SetTextBoxOutput("Parse error: " + e.Message);
+                mediator.SetTextBoxOutput("Parse error: " + e.Message);
                 programFromBox = null;
                 return false; // failure
             }
@@ -85,22 +85,22 @@ namespace MSO_P2_Code.GenericUI
         {
             if (!TryParseTextBoxProgram(out InnerProgram program))
                 return;
-            dataBridge.ClearTrace();
+            mediator.ClearTrace();
 
             World.WorldState endState;
             try { endState = program.Execute(); }
             catch (BlockException e)
             {
-                dataBridge.SetTextBoxOutput(e.Message);
+                mediator.SetTextBoxOutput(e.Message);
                 return;
             }
             catch (LeftGridException e)
             {
-                dataBridge.SetTextBoxOutput(e.Message);
+                mediator.SetTextBoxOutput(e.Message);
                 return;
             }
-            dataBridge.SetTextBoxOutput(outputLanguage.ExecutionResult(endState));
-            dataBridge.SetCharacterPos(endState.playerState.Pos);
+            mediator.SetTextBoxOutput(outputLanguage.ExecutionResult(endState));
+            mediator.SetCharacterPos(endState.playerState.Pos);
 
             (int x, int y)[] posTrace = endState.PosTrace;
             for (int i = 1; i < posTrace.Length; i++)
@@ -110,12 +110,12 @@ namespace MSO_P2_Code.GenericUI
                 if (start.x == end.x)
                 {
                     (int y0, int y1) = sort(start.y, end.y);
-                    dataBridge.AddGridTraceVertical(start.x, y0, y1);
+                    mediator.AddGridTraceVertical(start.x, y0, y1);
                 }
                 else if (start.y == end.y)
                 {
                     (int x0, int x1) = sort(start.x, end.x);
-                    dataBridge.AddGridTraceHorizontal(start.y, x0, x1);
+                    mediator.AddGridTraceHorizontal(start.y, x0, x1);
                 }
                 else throw new Exception($"Somehow got a slanted move, from {start} to {end}.");
 
@@ -126,42 +126,45 @@ namespace MSO_P2_Code.GenericUI
         {
             if (!TryParseTextBoxProgram(out InnerProgram program))
                 return;
-            dataBridge.SetTextBoxOutput(outputLanguage.ShowMetrics(program));
+            mediator.SetTextBoxOutput(outputLanguage.ShowMetrics(program));
         }
 
         public void SelectExercise(string fileContent)
         {
-            dataBridge.ClearExerciseStuff();
-            dataBridge.ClearTrace();
+            // todo: strengthen cohesion
+            mediator.ClearExerciseStuff();
+            mediator.ClearTrace();
 
             // fill grid based on exercise info
-            char[,] worldGrid;
+            //char[,] worldGrid;
+            (int x, int y) worldSize;
             try
             {
                 string[] rows = fileContent.Split("\r\n");
                 if (rows.Length == 0 || rows[0].Length == 0)
                     throw new ParseFailException("Empty exercise file");
-                worldGrid = new char[rows[0].Length, rows.Length];
-                loadedWorld = new WorldSettings((rows[0].Length, rows.Length));
-                for (int y = 0; y < worldGrid.GetLength(1); y++)
+                worldSize = (rows[0].Length, rows.Length);
+                //worldGrid = new char[rows[0].Length, rows.Length];
+                loadedWorld = new WorldSettings(worldSize);
+                for (int y = 0; y < worldSize.y; y++)
                 {
                     string row = rows[y];
-                    if (row.Length != worldGrid.GetLength(0))
-                        throw new ParseFailException($"Inconsistent grid width, row {y}.  {row.Length} != {worldGrid.GetLength(0)}");
-                    for (int x = 0; x < worldGrid.GetLength(0); x++)
+                    if (row.Length != worldSize.x)
+                        throw new ParseFailException($"Inconsistent grid width, row {y}.  {row.Length} != {worldSize.x}");
+                    for (int x = 0; x < worldSize.x; x++)
                     {
                         char cellInfo = row[x];
-                        worldGrid[x, y] = cellInfo;
+                        //worldGrid[x, y] = cellInfo;
                         switch (cellInfo)
                         {
                             case 'o': // empty cell
                                 break;
                             case '+': // wall
-                                dataBridge.BlockCell((x, y));
+                                mediator.BlockCell((x, y));
                                 loadedWorld.TryBlockCell((x, y));
                                 break;
                             case 'x': //destination
-                                dataBridge.SetDestination((x, y));
+                                mediator.SetDestination((x, y));
                                 if (loadedWorld.Destination != null) throw new ParseFailException("Found a second destination at " + (x, y));
                                 else loadedWorld.TrySetDestination((x, y));
                                 break;
@@ -173,26 +176,25 @@ namespace MSO_P2_Code.GenericUI
             }
             catch(ParseFailException e)
             {
-                dataBridge.SetTextBoxOutput(e.Message);
+                mediator.SetTextBoxOutput(e.Message);
                 return;
             }
 
             //mark edges of grid
-            for (int x = -1; x <= worldGrid.GetLength(0); x++)
+            for (int x = -1; x <= worldSize.x; x++)
             {
-                dataBridge.BlockCell((x, -1));
-                dataBridge.BlockCell((x, worldGrid.GetLength(1)));
+                mediator.BlockCell((x, -1));
+                mediator.BlockCell((x, worldSize.y));
             }
-            for (int y = 0; y < worldGrid.GetLength(1); y++)
+            for (int y = 0; y < worldSize.y; y++)
             {
-                dataBridge.BlockCell((-1, y));
-                dataBridge.BlockCell((worldGrid.GetLength(0), y));
+                mediator.BlockCell((-1, y));
+                mediator.BlockCell((worldSize.x, y));
             }
 
         }
         public void UnselectExercise()
         {
-            //todo: let the model know there's no exercise at the moment.
             loadedWorld = new WorldSettings();
         }
     }

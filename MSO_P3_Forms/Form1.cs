@@ -5,10 +5,10 @@ namespace MSO_P3_Forms
 {
     public partial class Form1 : Form
     {
-        class DataBridge : UI1.IDataBridge
+        class Mediator : UI1.IMediator
         {
             private readonly Form1 form1;
-            public DataBridge(Form1 form1)
+            public Mediator(Form1 form1)
             {
                 this.form1 = form1;
             }
@@ -74,7 +74,7 @@ namespace MSO_P3_Forms
         public Form1()
         {
             InitializeComponent();
-            model = new(new DataBridge(this));
+            model = new(new Mediator(this));
             exerciseGridItems = new(this.Controls, new List<Control>());
             playerTraceItems = new(this.Controls, new List<Control>());
 
