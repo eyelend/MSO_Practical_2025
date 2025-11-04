@@ -85,12 +85,12 @@ namespace MSO_P3_Forms
             worldGridBase = new(gridPos, cellSize, gridCellCount);
         }
 
-        private string? ManuallyFindAndReadToEnd(OpenFileDialog odf)
+        private string? ManuallyFindAndReadToEnd(OpenFileDialog ofd)
         {
-            switch (odf.ShowDialog())
+            switch (ofd.ShowDialog())
             {
                 case DialogResult.OK:
-                    Stream stream = odf.OpenFile();
+                    Stream stream = ofd.OpenFile();
                     StreamReader reader = new(stream);
                     string fileContent = reader.ReadToEnd();
                     reader.Close();
@@ -101,10 +101,46 @@ namespace MSO_P3_Forms
                     throw new Exception();
             }
         }
-        private void ManuallyFindAndUse(OpenFileDialog odf, Action<string> use)
+        private void ManuallyFindAndUse(OpenFileDialog ofd, Action<string> use)
         {
-            string? fileContent = ManuallyFindAndReadToEnd(odf);
+            string? fileContent = ManuallyFindAndReadToEnd(ofd);
             if (fileContent != null) use(fileContent);
+        }
+        private FileStream? ManuallyCreateFile(FolderBrowserDialog fbd, string name, string contentAsText)
+        {
+            FileStream fileStream;
+            switch (fbd.ShowDialog())
+            {
+                case DialogResult.OK:
+                    string path = fbd.SelectedPath;
+                    try
+                    {
+                        fileStream = File.Create(path + "\\" + name);
+                    }
+                    catch (Exception e)
+                    {
+                        //throw new Exception($"path = {path}.    other exc: {e.Message}");
+                        textBoxOutput.Text = e.Message;
+                        return null;
+                    }
+                    break;
+                case DialogResult.Cancel:
+                    return null;
+                default:
+                    throw new Exception();
+            }
+
+            //convert content
+            int length = contentAsText.Length;
+            byte[] contentAsBytes = new byte[length];
+            for (int i = 0; i < length; i++)
+                contentAsBytes[i] = (byte)contentAsText[i];
+
+            fileStream.Write(contentAsBytes, 0, length);
+            fileStream.Dispose();
+            fileStream.Close();
+
+            return fileStream;
         }
 
 
@@ -155,6 +191,17 @@ namespace MSO_P3_Forms
         private void buttonUnloadEx_Click(object sender, EventArgs e)
         {
             ClearExerciseStuff();
+        }
+
+        private void buttonExportTxt_Click(object sender, EventArgs e)
+        {
+            string fileName = "lastExport.txt";
+            string contentAsText = textBoxProgram.Text;
+            ManuallyCreateFile(folderBrowserDialog1, fileName, contentAsText);
+        }
+        private void buttonExportHTML_Click(object sender, EventArgs e)
+        {
+            //todo
         }
         #endregion UIEvents
 

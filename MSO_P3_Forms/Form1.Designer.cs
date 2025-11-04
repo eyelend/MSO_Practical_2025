@@ -39,6 +39,9 @@
             player = new Panel();
             destinationMark = new Label();
             buttonUnloadEx = new Button();
+            buttonExportTxt = new Button();
+            buttonExportHTML = new Button();
+            folderBrowserDialog1 = new FolderBrowserDialog();
             SuspendLayout();
             // 
             // textBoxProgram
@@ -169,11 +172,39 @@
             buttonUnloadEx.UseVisualStyleBackColor = false;
             buttonUnloadEx.Click += buttonUnloadEx_Click;
             // 
+            // buttonExportTxt
+            // 
+            buttonExportTxt.BackColor = Color.FromArgb(64, 128, 192);
+            buttonExportTxt.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            buttonExportTxt.ForeColor = Color.FromArgb(255, 255, 192);
+            buttonExportTxt.Location = new Point(24, 204);
+            buttonExportTxt.Name = "buttonExportTxt";
+            buttonExportTxt.Size = new Size(104, 38);
+            buttonExportTxt.TabIndex = 9;
+            buttonExportTxt.Text = "Export txt";
+            buttonExportTxt.UseVisualStyleBackColor = false;
+            buttonExportTxt.Click += buttonExportTxt_Click;
+            // 
+            // buttonExportHTML
+            // 
+            buttonExportHTML.BackColor = Color.FromArgb(64, 128, 192);
+            buttonExportHTML.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            buttonExportHTML.ForeColor = Color.FromArgb(255, 255, 192);
+            buttonExportHTML.Location = new Point(12, 248);
+            buttonExportHTML.Name = "buttonExportHTML";
+            buttonExportHTML.Size = new Size(131, 38);
+            buttonExportHTML.TabIndex = 10;
+            buttonExportHTML.Text = "Export HTML";
+            buttonExportHTML.UseVisualStyleBackColor = false;
+            buttonExportHTML.Click += buttonExportHTML_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(915, 587);
+            Controls.Add(buttonExportHTML);
+            Controls.Add(buttonExportTxt);
             Controls.Add(buttonUnloadEx);
             Controls.Add(destinationMark);
             Controls.Add(player);
@@ -204,5 +235,8 @@
         private Panel player;
         private Label destinationMark;
         private Button buttonUnloadEx;
+        private Button buttonExportTxt;
+        private Button buttonExportHTML;
+        private FolderBrowserDialog folderBrowserDialog1;
     }
 }
