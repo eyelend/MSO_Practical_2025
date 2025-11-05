@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MSO_P2_Code.GenericUI
+namespace MSO_P2_Code.GenericUI.Parser
 {
     internal class ProgramParser : IParser<InnerProgram>
     {
@@ -295,7 +295,7 @@ namespace MSO_P2_Code.GenericUI
                     if (!(line0[0] == "If")) return false;
                     if (!tryParseCondition(line0[1..], builder, out var condition)) return false;
 
-                    if(!tryParseTabbedBody(lines[1..], out Body.Builder bodyAsBuilder, out bodySize)) return false;
+                    if (!tryParseTabbedBody(lines[1..], out Body.Builder bodyAsBuilder, out bodySize)) return false;
 
                     builder._if(condition, bodyAsBuilder);
                     return true;
@@ -324,7 +324,7 @@ namespace MSO_P2_Code.GenericUI
                     return false;
                 }
             }
-            bool tryParseCondition(string[] words, Body.Builder bodyAsBuilder, out Command.Condition.ICondition? condition)
+            bool tryParseCondition(string[] words, Body.Builder bodyAsBuilder, out ICondition? condition)
             {
                 condition = null;
                 try

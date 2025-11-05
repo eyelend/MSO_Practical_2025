@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MSO_P2_Code.GenericUI;
+using MSO_P2_Code.GenericUI.Parser;
 
 namespace MSO_P2_Code.Applic
 {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MSO_P2_Code.GenericUI
+namespace MSO_P2_Code.GenericUI.Parser
 {
     internal interface IParser<T>
     {

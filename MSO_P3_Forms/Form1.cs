@@ -197,6 +197,7 @@ namespace MSO_P3_Forms
         {
             string fileName = "lastExport.txt";
             string contentAsText = textBoxProgram.Text;
+            //todo: check for parse error.
             ManuallyCreateFile(folderBrowserDialog1, fileName, contentAsText);
         }
         private void buttonExportHTML_Click(object sender, EventArgs e)
