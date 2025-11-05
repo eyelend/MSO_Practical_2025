@@ -79,9 +79,9 @@ namespace MSO_P2_Code.Command
                     this.commands.Enqueue(c);
                 return this;
             }
-            public ICondition facingBlock() => new FacingBlock();
-            public ICondition facingGridEdge() => new FacingGridEdge();
-            public ICondition not(ICondition condition) => new Not(condition);
+            public static ICondition facingBlock() => new FacingBlock();
+            public static ICondition facingGridEdge() => new FacingGridEdge();
+            public static ICondition not(ICondition condition) => new Not(condition);
             #endregion commands
         }
 

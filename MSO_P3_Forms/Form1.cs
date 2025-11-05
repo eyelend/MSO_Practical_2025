@@ -1,4 +1,5 @@
 using System.Drawing;
+using System.Xml.Linq;
 using UI1 = MSO_P2_Code.GenericUI.UI1;
 
 namespace MSO_P3_Forms
@@ -106,6 +107,18 @@ namespace MSO_P3_Forms
             string? fileContent = ManuallyFindAndReadToEnd(ofd);
             if (fileContent != null) use(fileContent);
         }
+        private string? ManuallyCreatePathAndName(FolderBrowserDialog fbd, string name)
+        {
+            switch (fbd.ShowDialog())
+            {
+                case DialogResult.OK:
+                    return fbd.SelectedPath + "\\" + name;
+                case DialogResult.Cancel:
+                    return null;
+                default:
+                    throw new Exception();
+            }
+        }
         private FileStream? ManuallyCreateFile(FolderBrowserDialog fbd, string name, string contentAsText)
         {
             FileStream fileStream;
@@ -196,13 +209,16 @@ namespace MSO_P3_Forms
         private void buttonExportTxt_Click(object sender, EventArgs e)
         {
             string fileName = "lastExport.txt";
-            string contentAsText = textBoxProgram.Text;
-            //todo: check for parse error.
-            ManuallyCreateFile(folderBrowserDialog1, fileName, contentAsText);
+            string? pathAndName = ManuallyCreatePathAndName(folderBrowserDialog1, fileName);
+            if (pathAndName == null) return;
+            model.ExportTXT(pathAndName);
         }
         private void buttonExportHTML_Click(object sender, EventArgs e)
         {
-            //todo
+            string fileName = "lastExportHTML.html";
+            string? pathAndName = ManuallyCreatePathAndName(folderBrowserDialog1, fileName);
+            if (pathAndName == null) return;
+            model.ExportHTML(pathAndName);
         }
         #endregion UIEvents
 

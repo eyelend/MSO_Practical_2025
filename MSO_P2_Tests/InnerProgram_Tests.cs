@@ -1,5 +1,6 @@
 ﻿using MSO_P2_Code;
 using MSO_P2_Code.Command;
+using MSO_P2_Code.World;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,6 +55,42 @@ namespace MSO_P2_Tests
             (int x, int y) result = p.Execute().playerState.Pos;
 
             Assert.Equal(result, expectedEnd);
+        }
+
+        [Fact]
+        public void TestWorldEffect1()
+        {
+            //arrange
+            Body.Builder bb = new Body.Builder()
+                .move(7)
+                .turn(Dir2.Left);
+            ActualWorld world = new ActualWorld(new WorldSettings((3, 5)), new WorldState());
+            InnerProgram p = new InnerProgram(bb.Build(), world);
+
+            //act?
+            void action() => p.Execute();
+
+            //assert
+            Assert.Throws<LeftGridException>(action);
+        }
+        [Fact]
+        public void TestWorldEffect2()
+        {
+            //arrange
+            Body.Builder bb = new Body.Builder()
+                .move(3)
+                .turn(Dir2.Right)
+                .move(3);
+            WorldSettings settings = new WorldSettings((5, 5));
+            settings.TryBlockCell((3, 2));
+            ActualWorld world = new ActualWorld(settings, new WorldState());
+            InnerProgram p = new InnerProgram(bb.Build(), world);
+            
+            //act?
+            void action() => p.Execute();
+
+            //assert
+            Assert.Throws<BlockException>(action);
         }
     }
 }

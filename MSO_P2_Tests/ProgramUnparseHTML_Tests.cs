@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace MSO_P2_Tests
 {
+    using BB = Body.Builder;
     public class ProgramUnparseHTML_Tests
     {
         private void TestBodyUnparse(Body.Builder body, string expectation)
@@ -28,7 +29,7 @@ namespace MSO_P2_Tests
         public void TestBodyUnparseBasic1()
         {
             //arrange
-            Body.Builder body = new Body.Builder().move(4).turn(Dir2.Left);
+            BB body = new BB().move(4).turn(Dir2.Left);
             string expectation = "<ul><li>\"Move 4\"</li><li>\"Turn left\"</li></ul>";
 
             TestBodyUnparse(body, expectation);
@@ -37,9 +38,19 @@ namespace MSO_P2_Tests
         public void TestBodyUnparseAdvanced1()
         {
             //arrange
-            Body.Builder body = new Body.Builder().move(14).repeat(2, new Body.Builder().turn(Dir2.Left)).move(7);
+            BB body = new BB().move(14).repeat(2, new BB().turn(Dir2.Left)).move(7);
             string expectation =
                 "<ul><li>\"Move 14\"</li><li>\"Repeat 2\"<ul><li>\"Turn left\"</li></ul></li><li>\"Move 7\"</li></ul>";
+
+            TestBodyUnparse(body, expectation);
+        }
+        [Fact]
+        public void TestBodyUnparseAdvanced2()
+        {
+            //arrange
+            BB body = new BB().move(14)._if(BB.facingBlock(), new BB().turn(Dir2.Left)).move(7);
+            string expectation =
+                "<ul><li>\"Move 14\"</li><li>\"If WallAhead\"<ul><li>\"Turn left\"</li></ul></li><li>\"Move 7\"</li></ul>";
 
             TestBodyUnparse(body, expectation);
         }

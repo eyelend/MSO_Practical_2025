@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace MSO_P2_Code.GenericUI.Parser
 {
+    using W = CommandWords;
     internal class ProgramParser : IParser<InnerProgram>
     {
         class BodyUnparser1 : ICommand.IAlgebra<string, string>
@@ -25,37 +26,37 @@ namespace MSO_P2_Code.GenericUI.Parser
 
             public string FoldFacingBlock()
             {
-                return "WallAhead";
+                return W.wallAhead;
             }
 
             public string FoldFacingGridEdge()
             {
-                return "GridEdge";
+                return W.gridEdge;
             }
 
             public string FoldNot(string input)
             {
-                return "Not " + input;
+                return W.not + " " + input;
             }
 
             public string FoldMove(int stepCount)
             {
-                return "Move " + stepCount;
+                return W.move + " " + stepCount;
             }
 
             public string FoldRepeat(int count, string body)
             {
-                return "Repeat " + count + AddBody(body);
+                return W.repeat + " " + count + AddBody(body);
             }
 
             public string FoldRepeatUntil(string conditionResult, string body)
             {
-                return "RepeatUntil " + conditionResult + AddBody(body);
+                return W.repeatUntil + " " + conditionResult + AddBody(body);
             }
 
             public string FoldTurn(Dir2 dir)
             {
-                return "Turn " + dir switch { Dir2.Left => "left", Dir2.Right => "right" };
+                return W.turn + " " + dir switch { Dir2.Left => W.left, Dir2.Right => W.right };
             }
 
             private string AddBody(string bodyBeforeTab)
@@ -70,7 +71,7 @@ namespace MSO_P2_Code.GenericUI.Parser
 
             public string FoldIf(string condition, string body)
             {
-                return "If " + condition + AddBody(body);
+                return W._if + " " + condition + AddBody(body);
             }
         }
 
@@ -191,13 +192,14 @@ namespace MSO_P2_Code.GenericUI.Parser
 
         private Body.Builder ParseCommandBody(string[] lines)
         {
-            Body.Builder builder = new Body.Builder();
+            Body.Builder builder = new();
             for (int lineIndex = 0; lineIndex < lines.Length; lineIndex++)
             {
                 int bodySize;
                 string currentLine = lines[lineIndex];
                 if (tryParseMove(currentLine, ref builder)) ;
                 else if (tryParseTurn(currentLine, ref builder)) ;
+
                 else if (tryParseRepeat(lines[lineIndex..], ref builder, out bodySize))
                     lineIndex += bodySize;
                 else if (tryParseRepeatUntil(lines[lineIndex..], ref builder, out bodySize))
@@ -214,7 +216,8 @@ namespace MSO_P2_Code.GenericUI.Parser
             {
                 try
                 {
-                    if (!(line[..4] == "Move")) return false;
+                    string[] words = Words(line);
+                    if (!(words[0] == W.move)) return false;
                     int stepCount = int.Parse(line[5..]);
                     builder.move(stepCount);
                     return true;
@@ -228,11 +231,12 @@ namespace MSO_P2_Code.GenericUI.Parser
             {
                 try
                 {
-                    if (!(line[..4] == "Turn")) return false;
+                    string[] words = Words(line);
+                    if (!(words[0] == W.turn)) return false;
 
                     Dir2 dir;
-                    if (line[5..9] == "left") dir = Dir2.Left;
-                    else if (line[5..10] == "right") dir = Dir2.Right;
+                    if (words[1] == W.left) dir = Dir2.Left;
+                    else if (words[1] == W.right) dir = Dir2.Right;
                     else return false;
 
                     builder.turn(dir);
@@ -249,9 +253,9 @@ namespace MSO_P2_Code.GenericUI.Parser
                 try
                 {
                     // parse first line
-                    string line0 = lines[0];
-                    if (!(line0[..6] == "Repeat")) return false;
-                    int count = int.Parse(line0.Split(' ')[1]);
+                    string[] line0 = Words(lines[0]);
+                    if (!(line0[0] == W.repeat)) return false;
+                    int count = int.Parse(line0[1]);
 
                     if (!tryParseTabbedBody(lines[1..], out Body.Builder bodyAsBuilder, out bodySize)) return false;
 
@@ -269,9 +273,9 @@ namespace MSO_P2_Code.GenericUI.Parser
                 try
                 {
                     // parse first line
-                    string[] line0 = lines[0].Split(' ');
+                    string[] line0 = Words(lines[0]);
                     if (line0.Length < 2) return false;
-                    if (!(line0[0] == "RepeatUntil")) return false;
+                    if (!(line0[0] == W.repeatUntil)) return false;
                     if (!tryParseCondition(line0[1..], builder, out var condition)) return false;
 
                     if (!tryParseTabbedBody(lines[1..], out Body.Builder bodyAsBuilder, out bodySize)) return false;
@@ -290,9 +294,9 @@ namespace MSO_P2_Code.GenericUI.Parser
                 try
                 {
                     // parse first line
-                    string[] line0 = lines[0].Split(' ');
+                    string[] line0 = Words(lines[0]);
                     if (line0.Length < 2) return false;
-                    if (!(line0[0] == "If")) return false;
+                    if (!(line0[0] == W._if)) return false;
                     if (!tryParseCondition(line0[1..], builder, out var condition)) return false;
 
                     if (!tryParseTabbedBody(lines[1..], out Body.Builder bodyAsBuilder, out bodySize)) return false;
@@ -332,12 +336,12 @@ namespace MSO_P2_Code.GenericUI.Parser
                     if (words.Length == 0) return false;
                     string word0 = words[0];
 
-                    if (word0.StartsWith("WallAhead"))
-                        condition = bodyAsBuilder.facingBlock();
-                    else if (word0.StartsWith("GridEdge"))
-                        condition = bodyAsBuilder.facingGridEdge();
-                    else if (word0.StartsWith("Not") && tryParseCondition(words[1..], bodyAsBuilder, out var inputCondition))
-                        condition = bodyAsBuilder.not(inputCondition);
+                    if (word0.StartsWith(W.wallAhead))
+                        condition = Body.Builder.facingBlock();
+                    else if (word0.StartsWith(W.gridEdge))
+                        condition = Body.Builder.facingGridEdge();
+                    else if (word0.StartsWith(W.not) && tryParseCondition(words[1..], bodyAsBuilder, out var inputCondition))
+                        condition = Body.Builder.not(inputCondition);
                     else return false;
 
                     return true;
@@ -349,7 +353,7 @@ namespace MSO_P2_Code.GenericUI.Parser
             }
         }
 
-        private string[] TrimFront(string[] lines, int tabSize) // removes 4 white spaces from the front of each string
+        private static string[] TrimFront(string[] lines, int tabSize) // removes 4 white spaces from the front of each string
         {
             string[] result = new string[lines.Length];
             int i = 0;
@@ -361,5 +365,7 @@ namespace MSO_P2_Code.GenericUI.Parser
             }
             return result;
         }
+        private static string[] Words(string line)
+            => line.Split(' ');
     }
 }

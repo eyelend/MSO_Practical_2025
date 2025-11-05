@@ -3,9 +3,11 @@ using MSO_P2_Code.GenericUI.Parser;
 using MSO_P2_Code.World;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace MSO_P2_Code.GenericUI
 {
@@ -198,5 +200,60 @@ namespace MSO_P2_Code.GenericUI
         {
             loadedWorld = new WorldSettings();
         }
+
+
+        #region export
+        private FileStream? TryCreateFile(string pathAndName, string contentAsText)
+        {
+            FileStream fileStream;
+
+            fileStream = File.Create(pathAndName);
+
+            //convert content
+            int length = contentAsText.Length;
+            byte[] contentAsBytes = new byte[length];
+            for (int i = 0; i < length; i++)
+                contentAsBytes[i] = (byte)contentAsText[i];
+
+            fileStream.Write(contentAsBytes, 0, length);
+            fileStream.Dispose();
+            fileStream.Close();
+
+            return fileStream;
+        }
+        public bool TryExportTXT(string pathAndName)
+        {
+            string contentAsText = mediator.ReadTextBoxProgram();
+
+            // check for parse error.
+            try { programParser.Parse(contentAsText); }
+            catch { return false; }
+
+            FileStream? fileStream = TryCreateFile(pathAndName, contentAsText);
+            return fileStream != null;
+        }
+        public void ExportTXT(string pathAndName)
+        {
+            if (!TryExportTXT(pathAndName)) mediator.SetTextBoxOutput("txt export fail");
+        }
+        public bool TryExportHTML(string pathAndName)
+        {
+            string textBoxText = mediator.ReadTextBoxProgram();
+            string contentAsText;
+
+            try
+            {
+                contentAsText = new ProgramParserHTML().Unparse(programParser.Parse(textBoxText)); //convert
+            }
+            catch { return false; }
+
+            FileStream? fileStream = TryCreateFile(pathAndName, contentAsText);
+            return fileStream != null;
+        }
+        public void ExportHTML(string pathAndName)
+        {
+            if (!TryExportHTML(pathAndName)) mediator.SetTextBoxOutput("html export fail");
+        }
+        #endregion export
     }
 }

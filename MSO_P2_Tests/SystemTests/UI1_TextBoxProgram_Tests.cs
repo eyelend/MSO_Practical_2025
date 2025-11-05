@@ -25,5 +25,21 @@ namespace MSO_P2_Tests.SystemTests
             //assert
             Assert.Equal(mediator.CharacterPos, expectation);
         }
+        [Fact]
+        public void TestProgram2()
+        {
+            //arrange
+            MockUI1Mediator mediator = new();
+            UI1 ui = new(mediator);
+            string inputCode = "Repeat 3\n    Move 3\n    Turn right\nMove 1";
+            (int x, int y) expectation = (0, 2);
+
+            //act
+            mediator.SetTextBoxProgram(inputCode);
+            ui.ClickRun();
+
+            //assert
+            Assert.Equal(mediator.CharacterPos, expectation);
+        }
     }
 }
