@@ -10,7 +10,7 @@ namespace MSO_P2_Code.Command.Condition
     internal interface ICondition
     {
         bool Check(ActualWorld world);
-        //Result Fold<Result>(Result foldFacingBlock, Result foldFacingGridEdge, Func<Result, Result> foldNot);
+
         Result Fold<Result>(Algebra<Result> algebra);
 
         public class Algebra<Result>

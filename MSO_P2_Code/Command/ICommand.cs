@@ -29,8 +29,7 @@ namespace MSO_P2_Code.Command
         }
         public interface IAlgebraNoCondition<Result>
         {
-            // Allows external classes to distinguish between ICommand-types without depending on those types.
-            // If ICommand gets more realizations, you can add functions here to represent them.
+            // Same idea as IAlgebra, but conditionals get ignored.
             Result FoldTurn(Dir2 dir);
             Result FoldMove(int stepCount);
             Result FoldRepeat(int count, Result foldedBody);

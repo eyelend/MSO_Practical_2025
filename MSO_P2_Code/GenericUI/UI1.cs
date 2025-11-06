@@ -135,11 +135,11 @@ namespace MSO_P2_Code.GenericUI
         public void SelectExercise(string fileContent)
         {
             // todo: strengthen cohesion
+
             mediator.ClearExerciseStuff();
             mediator.ClearTrace();
 
             // fill grid based on exercise info
-            //char[,] worldGrid;
             (int x, int y) worldSize;
             try
             {
@@ -147,7 +147,6 @@ namespace MSO_P2_Code.GenericUI
                 if (rows.Length == 0 || rows[0].Length == 0)
                     throw new ParseFailException("Empty exercise file");
                 worldSize = (rows[0].Length, rows.Length);
-                //worldGrid = new char[rows[0].Length, rows.Length];
                 loadedWorld = new WorldSettings(worldSize);
                 for (int y = 0; y < worldSize.y; y++)
                 {
@@ -157,7 +156,6 @@ namespace MSO_P2_Code.GenericUI
                     for (int x = 0; x < worldSize.x; x++)
                     {
                         char cellInfo = row[x];
-                        //worldGrid[x, y] = cellInfo;
                         switch (cellInfo)
                         {
                             case 'o': // empty cell
@@ -199,6 +197,7 @@ namespace MSO_P2_Code.GenericUI
         public void UnselectExercise()
         {
             loadedWorld = new WorldSettings();
+            mediator.ClearExerciseStuff();
         }
 
 
@@ -207,8 +206,9 @@ namespace MSO_P2_Code.GenericUI
         {
             FileStream fileStream;
 
-            fileStream = File.Create(pathAndName);
-
+            try { fileStream = File.Create(pathAndName); }
+            catch { return null; }
+            
             //convert content
             int length = contentAsText.Length;
             byte[] contentAsBytes = new byte[length];

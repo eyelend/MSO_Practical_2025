@@ -29,11 +29,7 @@ namespace MSO_P2_Code.World
             try { return settings.GetCell(facedPoint); }
             catch (IndexOutOfRangeException) { return null; }
         }
-        private bool TryGetFacedCell(out WorldCell? result)
-        {
-            result = TryGetFacedCell();
-            return result != null;
-        }
+
         #region commands
         public void TurnLeft()
         {

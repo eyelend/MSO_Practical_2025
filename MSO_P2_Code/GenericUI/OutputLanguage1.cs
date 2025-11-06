@@ -20,7 +20,7 @@ namespace MSO_P2_Code.GenericUI
             {
                 traceText.Append(et.TextualTrace() + ", ");
             }
-            if (traceText.Length >= 2 /*&& traceText[^2] == ',' && traceText[^1] == ' '*/)
+            if (traceText.Length >= 2)
                 traceText.Remove(traceText.Length - 2, 2);
             traceText.Append('.');
 

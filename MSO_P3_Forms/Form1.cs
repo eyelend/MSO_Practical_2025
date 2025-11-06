@@ -178,11 +178,10 @@ namespace MSO_P3_Forms
         {
             // todo: increase cohesion in this method.
 
-            if (comboBoxLoadProgram != (ComboBox)sender) throw new Exception("Misunderstanding 'sender'."); // verifying what 'sender' means
             ComboBox comboBox = (ComboBox)sender; //comboBoxLoadProgram;
             string basic = "Basic", advanced = "Advanced", expert = "Expert";
 
-            // simple test in case someone removed or misspelled a word 
+            // simple test in case a developer removed or misspelled a word 
             ComboBox.ObjectCollection collection = comboBox.Items;
             if (!(collection.Contains(basic) && collection.Contains(advanced) && collection.Contains(expert)))
                 throw new Exception("Doesn't contain all hard-coded-example elements");

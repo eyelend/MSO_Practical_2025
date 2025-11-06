@@ -14,7 +14,6 @@ namespace MSO_P2_Code.Command.Condition
             return world.FacingGridEdge();
         }
 
-        //public Result Fold<Result>(Result foldFacingBlock, Result foldFacingGridEdge, Func<Result, Result> foldNot) => foldFacingGridEdge;
         public Result Fold<Result>(ICondition.Algebra<Result> algebra)
             => algebra.foldFacingGridEdge;
 
