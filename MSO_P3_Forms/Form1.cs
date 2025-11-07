@@ -202,7 +202,7 @@ namespace MSO_P3_Forms
         }
         private void buttonUnloadEx_Click(object sender, EventArgs e)
         {
-            ClearExerciseStuff();
+            model.UnselectExercise();
         }
 
         private void buttonExportTxt_Click(object sender, EventArgs e)

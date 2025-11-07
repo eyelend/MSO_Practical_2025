@@ -16,9 +16,12 @@ namespace MSO_P2_Code
         public InnerProgram(Body commands) : this(commands, new ActualWorld()) { }
 
         public WorldState Execute()
+            => Execute(out _);
+        public WorldState Execute(out bool reachedDest)
         {
             ActualWorld world = startWorld.CopyState();
             commands.ApplyOnWorld(ref world);
+            reachedDest = world.AtDestination();
             return world.state;
         }
         public ProgramMetrics GetMetrics()

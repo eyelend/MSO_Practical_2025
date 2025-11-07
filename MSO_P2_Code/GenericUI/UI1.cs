@@ -91,7 +91,8 @@ namespace MSO_P2_Code.GenericUI
             mediator.ClearTrace();
 
             World.WorldState endState;
-            try { endState = program.Execute(); }
+            bool reachedDest;
+            try { endState = program.Execute(out reachedDest); }
             catch (BlockException e)
             {
                 mediator.SetTextBoxOutput(e.Message);
@@ -102,7 +103,7 @@ namespace MSO_P2_Code.GenericUI
                 mediator.SetTextBoxOutput(e.Message);
                 return;
             }
-            mediator.SetTextBoxOutput(outputLanguage.ExecutionResult(endState));
+            mediator.SetTextBoxOutput(outputLanguage.ExecutionResult(endState, reachedDest));
             mediator.SetCharacterPos(endState.playerState.Pos);
 
             (int x, int y)[] posTrace = endState.PosTrace;

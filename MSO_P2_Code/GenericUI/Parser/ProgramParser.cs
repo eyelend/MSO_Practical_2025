@@ -131,7 +131,7 @@ namespace MSO_P2_Code.GenericUI.Parser
                 {
                     string[] words = Words(line);
                     if (!(words[0] == W.move)) return false;
-                    int stepCount = int.Parse(line[5..]);
+                    int stepCount = int.Parse(words[1]);
                     builder.move(stepCount);
                     return true;
                 }
@@ -148,8 +148,8 @@ namespace MSO_P2_Code.GenericUI.Parser
                     if (!(words[0] == W.turn)) return false;
 
                     Dir2 dir;
-                    if (words[1] == W.left) dir = Dir2.Left;
-                    else if (words[1] == W.right) dir = Dir2.Right;
+                    if (words[1].StartsWith(W.left)) dir = Dir2.Left;
+                    else if (words[1].StartsWith(W.right)) dir = Dir2.Right;
                     else return false;
 
                     builder.turn(dir);

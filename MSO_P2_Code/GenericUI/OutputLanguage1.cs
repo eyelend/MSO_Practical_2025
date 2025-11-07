@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MSO_P2_Code.World;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,8 +14,6 @@ namespace MSO_P2_Code.GenericUI
 
         public string ExecutionResult(World.WorldState endState)
         {
-            //World.WorldState endState = program.Execute();
-
             StringBuilder traceText = new StringBuilder();
             foreach (World.EventTrace.IEventTrace et in endState.Trace)
             {
@@ -27,11 +26,16 @@ namespace MSO_P2_Code.GenericUI
             string dirAsText = endState.playerState.Dir.Match("north", "east", "south", "west");
             traceText.Append($"\nEnd state {endState.playerState.Pos} facing {dirAsText}.");
 
-            (int x, int y)? destination = null; //todo: get destination from program's world
-            if (endState.playerState.Pos == destination)
-                traceText.Append("\nSuccessfully reached the destination");
             return traceText.ToString();
         }
+
+        public string ExecutionResult(WorldState endState, bool reachedDest)
+        {
+            string result = ExecutionResult(endState);
+            if (reachedDest) result += "\nSuccessfully reached the destination";
+            return result;
+        }
+
         public string ShowMetrics(InnerProgram program)
         {
             Command.ProgramMetrics metrics = program.GetMetrics();

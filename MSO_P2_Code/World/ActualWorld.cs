@@ -62,5 +62,8 @@ namespace MSO_P2_Code.World
             return !settings.IsInside(p);
         }
         #endregion commands
+
+        public bool AtDestination()
+            => state.playerState.Pos == settings.Destination;
     }
 }

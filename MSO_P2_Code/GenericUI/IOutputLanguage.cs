@@ -10,6 +10,7 @@ namespace MSO_P2_Code.GenericUI
     internal interface IOutputLanguage
     {
         string ExecutionResult(WorldState endState);
+        string ExecutionResult(WorldState endState, bool reachedDest);
         string ShowMetrics(InnerProgram program);
     }
 }
